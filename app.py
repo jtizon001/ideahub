@@ -22,7 +22,14 @@ def scrapeByUser():
 		Exporter.main(['--username', username, '--maxtweets', '1'])
 		return 'hello'
 
+@app.route('/sentiment', methods=['GET', 'POST'])
+def getSentiment():
+	credentials = {"url": "https://gateway.watsonplatform.net/natural-language-understanding/api","username": "cacede17-f1de-4533-bde9-7f3554bf7030","password": "frAC0V0rUWTD"}
 
+	if request.headers['Content-Type']=='application/json':
+		#do stuff
+	print (json_res)
+	return 'blah'
 
 
 
