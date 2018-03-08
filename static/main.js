@@ -71,11 +71,29 @@ $(document).ready(function () {
     // }
  
   });
+  
+  $('#downloadCSV').on('submit', function(e) {
+    e.preventDefault();
+
+    var data = {
+      file_name: $('#file_name').val()
+    }
+
+    $.ajax({
+      url: '/getCSV',
+      contentType: "application/json",
+      data: data,
+      method: 'POST',
+      error: function(response) {
+        console.log("error in ajax call");
+      }
+    }).then( function(response) {
+      var json_obj = JSON.parse(response);
+      $('#csv_test').empty();
+      $('#csv_test').append($("<p>/outputfiles/" + json_obj + "</p>"));
+      $('#csv_test').append($("<a href='./outputfiles/" + json_obj + "' download='" + json_obj + "'>Download</a>"));
+    });
+    
+  });
+  
 });
-
-
-
-
-
-
-
