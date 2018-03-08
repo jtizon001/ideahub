@@ -28,9 +28,20 @@ def getSentiment():
 
 	if request.headers['Content-Type']=='application/json':
 		#do stuff
-	print (json_res)
+		print (json_res)
 	return 'blah'
 
+@app.route('/getCSV', methods=['POST'])
+def getCSV():
+
+	# file_name="file" 
+
+	if (request.headers['Content-Type']=='application/json'):
+
+		# fileName = "file".csv
+		fileName = request.data.split('=')[1] + ".csv"
+		response = json.dumps(fileName)
+		return response
 
 
 if __name__=='__main__':
