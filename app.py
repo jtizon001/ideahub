@@ -16,7 +16,6 @@ def index():
 def scrapeByUser():
 	if request.headers['Content-Type']=='application/json':
 		usernameArg=request.get_json()
-		print('chicken')
 		username=usernameArg['username']
 		print(username)
 		Exporter.main(['--username', username, '--maxtweets', '1'])
