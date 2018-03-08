@@ -33,7 +33,7 @@ def getSentiment():
 @app.route('/getCSV', methods=['POST'])
 def getCSV():
 
-	# file_name="file" 
+	# request.data = file_name="file" 
 
 	if (request.headers['Content-Type']=='application/json'):
 
