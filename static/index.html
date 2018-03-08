@@ -15,6 +15,12 @@
 		<button class="btn btn-primary btn-lg" id="button1" >Submit</button>
 		<!--<input class="btn btn-primary btn-lg" type="submit" name="submit" id = "button1">-->
 	</form>
+	<form enctype='application/json' id='downloadCSV' name='csv_form' method='POST'>
+		Download csv: <input type='text' name='file_name' id='file_name' placeholder='csv file name'>
+		<input type='submit' name='submit' value='Download'>
+	</form>
+	<div id='csv_test'>
+	</div>
 
 </body>
 </html>
