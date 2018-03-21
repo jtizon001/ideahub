@@ -5,24 +5,8 @@ import AppBar from 'material-ui/AppBar';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
-//import axios from 'axios';
-import $ from 'jquery'
 
-// var user='';
-// var tweet_amount='';
-// var file_name='';
-// var keyword='';
-//var origin = window.location.origin;
 class App extends Component {
-  // constructor() {
-  //   super();
-  //   this.state = {
-  //     user: '',
-  //     tweet_amount:'',
-  //     file_name:'',
-  //     keyword:'',
-  //   };
-  // }
   render() {
     //const{user,tweet_amount,file_name,keyword} = this.state;
     return (
@@ -56,26 +40,9 @@ class App extends Component {
   handleChange(e,index,value){
     var name=e.target.id
     this.setState({[e.target.id]: index});
-    //console.log("test",this.state.name);
   }
   handleSubmit(e){
     e.preventDefault();
-    //var url =  origin + '/byUserName'
-    // $.ajax({
-    //   url: 'http://127.0.0.1:5000/api/test',
-    //   dataType: 'json',
-    //   type: 'POST',
-    //   data: JSON.stringify(this.state),
-    //   contentType: 'application/json; charset=utf-8',
-    //   success: function(data){
-    //     alert(data.message);
-    //   }.bind(this),
-    //   error: function(xhr, status, err){
-    //     alert('Poll creation failed: ' + err.toString());
-    //   }.bind(this)
-    // });
-    //const { user,tweet_amount,file_name,keyword } = this.state;
-    //alert(this.state);
     console.log(this.state.user);
     fetch('http://127.0.0.1:5000/api/byUserName', {
       method: 'POST',
