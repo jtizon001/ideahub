@@ -77,14 +77,14 @@ class App extends Component {
     //const { user,tweet_amount,file_name,keyword } = this.state;
     //alert(this.state);
     console.log(this.state.user);
-    fetch('http://127.0.0.1:5000/api/test', {
+    fetch('http://127.0.0.1:5000/api/byUserName', {
       method: 'POST',
       headers: new Headers(
          {"Content-Type": "application/json"}
       ),
       body: JSON.stringify({user:'myname'}),
     }).then(function (result) {
-    console.log(result);
+    console.log(result.user);
     });
   }
 }

@@ -16,23 +16,21 @@ import Exporter
 
 app=Flask(__name__)
 # app.after_request(after_request)
-#CORS(app)
+CORS(app)
 # app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy   dog'
 # app.config['CORS_HEADERS'] = 'Content-Type'
 #
-CORS(app, resources={r"/foo": {"origins": "http://localhost:3000"}})
+#CORS(app, resources={r"/foo": {"origins": "http://localhost:3000"}})
 
 
 @app.route('/',methods=['GET','POST'])
 def index():
 	return flask.send_from_directory('static', 'index.html')
 
-@app.route('/api/test', methods=['GET'])
+@app.route('/api/test', methods=['GET','POST','OPTIONS'])
 # @cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 # @cross_origin(origin='localhost')
 def template():
-	# usernameArg=request.get_json()
-	# user=usernameArg['user']
 	# print(username)
 	# # # response=jsnofy(user="joe")
 	# # bottle.response.set_header("Access-Control-Allow-Origin", "*")
@@ -42,23 +40,35 @@ def template():
 	if request.method == 'OPTIONS':
 	    res = flask.make_response()
 	if request.method == 'POST':
-	    data = request.data
-	    data = json.loads(data)
-	    res = flask.make_response(data)
-	# res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
+		usernameArg=request.get_json()
+		user=usernameArg.get('user')
+	    # data = request.data
+	    # data = json.loads(data)
+		print(user)
+		res = flask.make_response(jsonify(user='jason'))
+	res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
 	res.headers['Access-Control-Allow-Methods'] = 'POST,GET,OPTIONS'
 	res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
 	return res
 
-@app.route('/api/byUserName',methods=['GET'])
+@app.route('/api/byUserName',methods=['GET','POST','OPTIONS'])
 # @cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 def scrapeByUser():
-	if request.headers['Content-Type']=='application/json':
+	user=''
+	if request.method == 'OPTIONS':
+	    res = flask.make_response()
+	if request.method == 'POST':
 		usernameArg=request.get_json()
-		username=usernameArg['username']
-		print(username)
-		Exporter.main(['--username', username, '--maxtweets', '1'])
-		return 'hello'
+		user=usernameArg.get('user')
+		print(user)
+	    # data = request.data
+	    # data = json.loads(data)
+		res = flask.make_response(jsonify(user='jason'))
+	res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
+	res.headers['Access-Control-Allow-Methods'] = 'POST,GET,OPTIONS'
+	res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
+	Exporter.main(['--username', user, '--maxtweets', '1'])
+	return res
 
 @app.route('/sentiment', methods=['GET', 'POST'])
 def getSentiment():
