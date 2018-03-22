@@ -29,18 +29,33 @@ class App extends Component {
           <TextField hintText="Keyword" floatingLabelText="Keyword"
                 type="text" id="keyword"
                 onChange={this.handleChange.bind(this)}/><br/>
-          <DatePicker hintText="Start Date" id="start_date"/>
-          <DatePicker hintText="End Date" id="end_date"/>
+          <DatePicker hintText="Start Date" floatingLabelText="Start Date"
+                id="start_date" openToYearSelection={true}
+                onChange={this.handleStartDateChange.bind(this)}/>
+          <DatePicker hintText="End Date" floatingLabelText="End Date"
+                id="end_date" openToYearSelection={true}
+                onChange={this.handleEndDateChange.bind(this)}/>
           <RaisedButton label="Submit" type="submit"/>
         </form>
       </div>
     </MuiThemeProvider>
     );
   }
+  
+  handleStartDateChange(e,date){
+    this.setState({'start_date': date});
+  }
+
+  handleEndDateChange(e,date){
+    this.setState({'end_date': date});
+  }
+
   handleChange(e,index,value){
     var name=e.target.id
     this.setState({[e.target.id]: index});
   }
+
+  //for username search
   handleSubmit(e){
     e.preventDefault();
     console.log(this.state.user);
@@ -49,9 +64,25 @@ class App extends Component {
       headers: new Headers(
          {"Content-Type": "application/json"}
       ),
-      body: JSON.stringify({user:'myname'}),
+      body: JSON.stringify({user:this.state.user}),
     }).then(function (result) {
     console.log(result.user);
+    });
+  }
+
+  //for keyword search
+  handleSubmit(e){
+    e.preventDefault();
+    console.log(this.state.keyword);
+    console.log(this.state);
+    fetch('http://127.0.0.1:5000/api/byKeyword', {
+      method: 'POST',
+      headers: new Headers(
+         {"Content-Type": "application/json"}
+      ),
+      body: JSON.stringify({keyword: this.state.keyword, tweet_amount: this.state.tweet_amount}),
+    }).then(function (result) {
+    console.log(result.keyword);
     });
   }
 }
