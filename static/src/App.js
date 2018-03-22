@@ -29,8 +29,12 @@ class App extends Component {
           <TextField hintText="Keyword" floatingLabelText="Keyword"
                 type="text" id="keyword"
                 onChange={this.handleChange.bind(this)}/><br/>
-          <DatePicker hintText="Start Date" id="start_date"/>
-          <DatePicker hintText="End Date" id="end_date"/>
+          <DatePicker hintText="Start Date" floatingLabelText="Start Date"
+                id="start_date" openToYearSelection={true}
+                onChange={this.handleStartDateChange.bind(this)}/>
+          <DatePicker hintText="End Date" floatingLabelText="End Date"
+                id="end_date" openToYearSelection={true}
+                onChange={this.handleEndDateChange.bind(this)}/>
           <RaisedButton label="Submit" type="submit"/>
         </form>
       </div>
@@ -41,17 +45,23 @@ class App extends Component {
     var name=e.target.id
     this.setState({[e.target.id]: index});
   }
+  handleStartDateChange(e,date){
+    this.setState({'start_date': date});
+  }
+  handleEndDateChange(e,date){
+    this.setState({'end_date': date});
+  }
   handleSubmit(e){
     e.preventDefault();
-    console.log(this.state.user);
+    console.log(this.state);
     fetch('http://127.0.0.1:5000/api/byUserName', {
       method: 'POST',
       headers: new Headers(
          {"Content-Type": "application/json"}
       ),
-      body: JSON.stringify({user:'myname'}),
+      body: JSON.stringify(this.state),
     }).then(function (result) {
-    console.log(result.user);
+    console.log(result);
     });
   }
 }
