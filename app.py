@@ -25,7 +25,28 @@ def scrapeByUser():
 	res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
 	res.headers['Access-Control-Allow-Methods'] = 'POST,GET,OPTIONS'
 	res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
-	Exporter.main(['--username', user, '--maxtweets', '1'])
+	Exporter.main(['--username', str(user), '--maxtweets', '1'])
+	return res
+
+@app.route('/api/byKeyword',methods=['GET','POST','OPTIONS'])
+def scrapeByKeyword():
+	keyword=''
+	tweet_amount=''
+	start_date=''
+	if request.method == 'OPTIONS':
+		res = flask.make_response()
+	if request.method == 'POST':
+		keywordArg=request.get_json()
+		print(keywordArg)
+		keyword=keywordArg.get('keyword')
+		tweet_amount=keywordArg.get('tweet_amount')
+		start_date=keywordArg.get('start_date')
+		print(keyword)
+		res = flask.make_response(jsonify(keyword='mykeyword'))
+		Exporter.main(['--querysearch', str(keyword), '--maxtweets', str(tweet_amount),'--since',str(start_date)])
+	res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
+	res.headers['Access-Control-Allow-Methods'] = 'POST,GET,OPTIONS'
+	res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
 	return res
 
 @app.route('/sentiment', methods=['GET', 'POST'])

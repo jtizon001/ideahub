@@ -29,8 +29,13 @@ class App extends Component {
           <TextField hintText="Keyword" floatingLabelText="Keyword"
                 type="text" id="keyword"
                 onChange={this.handleChange.bind(this)}/><br/>
-          <DatePicker hintText="Start Date" id="start_date"/>
-          <DatePicker hintText="End Date" id="end_date"/>
+          <DatePicker hintText="Start Date" floatingLabelText="Start Date"
+                id="start_date" openToYearSelection={true}
+
+                onChange={this.handleStartDateChange.bind(this)}/>
+          <DatePicker hintText="End Date" floatingLabelText="End Date"
+                id="end_date" openToYearSelection={true}
+                onChange={this.handleEndDateChange.bind(this)}/>
           <RaisedButton label="Submit" type="submit"/>
         </form>
       </div>
@@ -41,15 +46,23 @@ class App extends Component {
     var name=e.target.id
     this.setState({[e.target.id]: index});
   }
+  handleStartDateChange(e,date){
+    var format_date=date.getFullYear()+"-"+(date.getMonth()+1)+ "-" + date.getDate();
+    this.setState({'start_date': format_date});
+  }
+  handleEndDateChange(e,date){
+    var format_date=date.getFullYear()+"-"+(date.getMonth()+1)+ "-" + date.getDate();
+    this.setState({'end_date': format_date});
+  }
   handleSubmit(e){
     e.preventDefault();
-    console.log(this.state.user);
-    fetch('http://127.0.0.1:5000/api/byUserName', {
+    console.log(this.state);
+    fetch('http://127.0.0.1:5000/api/byKeyword', {
       method: 'POST',
       headers: new Headers(
          {"Content-Type": "application/json"}
       ),
-      body: JSON.stringify({user:'myname'}),
+      body: JSON.stringify(this.state),
     }).then(function (result) {
     console.log(result.user);
     });
