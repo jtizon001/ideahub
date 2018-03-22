@@ -44,7 +44,7 @@ def scrapeByKeyword():
 	res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
 	res.headers['Access-Control-Allow-Methods'] = 'POST,GET,OPTIONS'
 	res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
-	Exporter.main(['--querysearch', keyword, '--maxtweets', 15])
+	Exporter.main(['--querysearch', keyword, '--maxtweets', '15'])
 	return res
 
 @app.route('/sentiment', methods=['GET', 'POST'])
