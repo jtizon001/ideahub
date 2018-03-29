@@ -12,44 +12,57 @@ CORS(app)
 def index():
 	return flask.send_from_directory('static', 'index.html')
 
-@app.route('/api/byUserName',methods=['GET','POST','OPTIONS'])
-def scrapeByUser():
+@app.route('/api/form',methods=['GET','POST','OPTIONS'])
+def scrapeForm():
 	user=''
+	tweet_amount=''
+	checked='false'
+	filename=''
+	keyword=''
+	start_date=''
+	end_date=''
+	near=''
+	within=''
+	commandList=[]
 	if request.method == 'OPTIONS':
 	    res = flask.make_response()
 	if request.method == 'POST':
-		usernameArg=request.get_json()
-		user=usernameArg.get('user')
-		print(user)
-		res = flask.make_response(jsonify(user='jason'))
+		formArg=request.get_json()
+		checked=formArg.get('checked')
+		if checked==True:
+			commandList.extend(['--toptweets'])
+		user=formArg.get('user')
+		if user:
+			commandList.extend(['--username',str(user)])
+		tweet_amount=formArg.get('tweet_amount')
+		if tweet_amount:
+			commandList.extend(['--maxtweets',str(tweet_amount)])
+		filename=formArg.get('filename')
+		if filename:
+			commandList.extend(['--output',str(filename)])
+		keyword=formArg.get('keyword')
+		if keyword:
+			commandList.extend(['--querysearch',str(keyword)])
+		near=formArg.get('near')
+		if near:
+			commandList.extend(['--near',str(near)])
+		within=formArg.get('within')
+		if within:
+			commandList.extend(['--within',str(within)])
+		start_date=formArg.get('start_date')
+		if start_date:
+			commandList.extend(['--since',str(start_date)])
+		end_dare=formArg.get('end_date')
+		if end_date:
+			commandList.extend(['--until',str(end_date)])
+		res = flask.make_response(jsonify(res='hello'))
+		Exporter.main(commandList)
 	res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
 	res.headers['Access-Control-Allow-Methods'] = 'POST,GET,OPTIONS'
 	res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
-	Exporter.main(['--username', str(user), '--maxtweets', '1'])
 	return res
 
-@app.route('/api/byKeyword',methods=['GET','POST','OPTIONS'])
-def scrapeByKeyword():
-	keyword=''
-	tweet_amount=''
-	start_date=''
-	if request.method == 'OPTIONS':
-		res = flask.make_response()
-	if request.method == 'POST':
-		keywordArg=request.get_json()
-		print(keywordArg)
-		keyword=keywordArg.get('keyword')
-		tweet_amount=keywordArg.get('tweet_amount')
-		start_date=keywordArg.get('start_date')
-		print(keyword)
-		res = flask.make_response(jsonify(keyword='mykeyword'))
-		Exporter.main(['--querysearch', str(keyword), '--maxtweets', str(tweet_amount),'--since',str(start_date)])
-	res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
-	res.headers['Access-Control-Allow-Methods'] = 'POST,GET,OPTIONS'
-	res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
-	return res
-
-@app.route('/sentiment', methods=['GET', 'POST'])
+@app.route('/api/sentiment', methods=['GET', 'POST'])
 def getSentiment():
 	credentials = {"url": "https://gateway.watsonplatform.net/natural-language-understanding/api","username": "cacede17-f1de-4533-bde9-7f3554bf7030","password": "frAC0V0rUWTD"}
 

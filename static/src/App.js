@@ -5,8 +5,12 @@ import AppBar from 'material-ui/AppBar';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
+import Checkbox from 'material-ui/Checkbox'
 
 class App extends Component {
+  state = {
+    checked: false,
+  }
   render() {
     //const{user,tweet_amount,file_name,keyword} = this.state;
     return (
@@ -29,14 +33,22 @@ class App extends Component {
           <TextField hintText="Keyword" floatingLabelText="Keyword"
                 type="text" id="keyword"
                 onChange={this.handleChange.bind(this)}/><br/>
+          <TextField hintText="Location" floatingLabelText="Location"
+                type="text" id="near"
+                onChange={this.handleChange.bind(this)}/><br/>
+          <TextField  hintText="Radius" floatingLabelText="Radius"
+                type="text" id="within"
+                onChange={this.handleChange.bind(this)}/><br/>
           <DatePicker hintText="Start Date" floatingLabelText="Start Date"
                 id="start_date" openToYearSelection={true}
-
                 onChange={this.handleStartDateChange.bind(this)}/>
           <DatePicker hintText="End Date" floatingLabelText="End Date"
                 id="end_date" openToYearSelection={true}
-                onChange={this.handleEndDateChange.bind(this)}/>
-          <RaisedButton label="Submit" type="submit"/>
+                onChange={this.handleEndDateChange.bind(this)}/><br/>
+          <Checkbox label="Top Tweets" checked={this.state.checked}
+                onCheck={this.handleCheck.bind(this)}
+                />
+          <RaisedButton label="Submit" type="submit"/><br/><br/><br/>
         </form>
       </div>
     </MuiThemeProvider>
@@ -50,6 +62,13 @@ class App extends Component {
     var format_date=date.getFullYear()+"-"+(date.getMonth()+1)+ "-" + date.getDate();
     this.setState({'start_date': format_date});
   }
+  handleCheck(){
+    this.setState((oldState) => {
+      return {
+        checked: !oldState.checked,
+      };
+    });
+  }
   handleEndDateChange(e,date){
     var format_date=date.getFullYear()+"-"+(date.getMonth()+1)+ "-" + date.getDate();
     this.setState({'end_date': format_date});
@@ -57,14 +76,22 @@ class App extends Component {
   handleSubmit(e){
     e.preventDefault();
     console.log(this.state);
-    fetch('http://127.0.0.1:5000/api/byKeyword', {
+    fetch('http://127.0.0.1:5000/api/form', {
       method: 'POST',
       headers: new Headers(
          {"Content-Type": "application/json"}
       ),
       body: JSON.stringify(this.state),
     }).then(function (result) {
-    console.log(result.user);
+    console.log('csv ready');
+    });
+    fetch('http://127.0.0.1:5000/api/sentiment', {
+      method: 'POST',
+      headers: new Headers(
+         {"Content-Type": "application/json"}
+      ),
+    }).then(function (result) {
+    console.log('ok');
     });
   }
 }
