@@ -34,6 +34,8 @@ class TweetManager:
 				tweet = models.Tweet()
 
 				# usernameTweet = tweetPQ("span.username.js-action-profile-name b").text();
+				#usernameTweet = tweetPQ("span.username.js-action-profile-name b").text();
+
 				usernameTweet = tweetPQ("span:first.username.u-dir b").text();
 				print(usernameTweet)
 				print('chicken')
@@ -140,3 +142,4 @@ class TweetManager:
 		dataJson = json.loads(jsonResponse.decode())
 
 		return dataJson
+

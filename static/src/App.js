@@ -54,6 +54,7 @@ class App extends Component {
     </MuiThemeProvider>
     );
   }
+
   handleChange(e,index,value){
     var name=e.target.id
     this.setState({[e.target.id]: index});
