@@ -36,7 +36,7 @@ class TweetManager:
 				# usernameTweet = tweetPQ("span.username.js-action-profile-name b").text();
 				usernameTweet = tweetPQ("span:first.username.u-dir b").text();
 				print(usernameTweet)
-				print('chicken')
+				
 				txt = re.sub(r"\s+", " ", tweetPQ("p.js-tweet-text").text().replace('# ', '#').replace('@ ', '@'));
 				retweets = int(tweetPQ("span.ProfileTweet-action--retweet span.ProfileTweet-actionCount").attr("data-tweet-stat-count").replace(",", ""));
 				favorites = int(tweetPQ("span.ProfileTweet-action--favorite span.ProfileTweet-actionCount").attr("data-tweet-stat-count").replace(",", ""));
