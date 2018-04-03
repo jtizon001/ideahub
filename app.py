@@ -71,17 +71,22 @@ def getSentiment():
 		print (json_res)
 	return 'blah'
 
-@app.route('/getCSV', methods=['POST'])
+@app.route('/api/getCSV', methods=['GET', 'POST'])
 def getCSV():
 
-	# request.data = file_name="file"
+	if (request.method == 'OPTIONS'):
+		res = flask.make_response()
+	if (request.method == 'POST'):
+		formArg = request.get_json()
+		fileName = formArg.get('filename') + ".csv"
+		res = flask.make_response()
 
-	if (request.headers['Content-Type']=='application/json'):
-
-		# fileName = "file".csv
-		fileName = request.data.split('=')[1] + ".csv"
-		response = json.dumps(fileName)
-		return response
+	res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
+	res.headers['Access-Control-Allow-Methods'] = 'POST,GET,OPTIONS'
+	res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
+	res.headers['Content-Disposition'] = 'attachment; filename=' + fileName
+	res.headers['Content-Type'] = 'application/octet-stream'
+	return flask.send_from_directory('outputfiles', fileName, as_attachment=True)
 
 
 if __name__=='__main__':
