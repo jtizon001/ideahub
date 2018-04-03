@@ -51,7 +51,9 @@ class App extends Component {
           <RaisedButton label="Submit" type="submit"/><br/><br/><br/>
         </form>
         <div className="Option">
-          {this.state.csvReady&& <RaisedButton label="Download"/>}
+          <form onSubmit={this.handleDownload.bind(this)}>
+            {this.state.csvReady&& <RaisedButton label="Download" type="submit"/>}
+          </form>
         </div>
         <br/><br/><br/>
       </div>
@@ -101,6 +103,21 @@ class App extends Component {
     // }).then(function (result) {
     // console.log('ok');
     // });
+  }
+
+  handleDownload(e){
+    e.preventDefault();
+    console.log(this.state);
+    fetch('http://127.0.0.1:5000/api/getCSV', {
+      method: 'POST',
+      headers: new Headers(
+          {"Content-Type": "application/json"}
+      ),
+      body: JSON.stringify(this.state),
+    }).then((result) =>{
+      console.log("file sent");
+      
+    });
   }
 }
 
