@@ -10,9 +10,9 @@ import Checkbox from 'material-ui/Checkbox'
 class App extends Component {
   state = {
     checked: false,
+    csvReady: false,
   }
   render() {
-    //const{user,tweet_amount,file_name,keyword} = this.state;
     return (
     <MuiThemeProvider>
       <div className="App">
@@ -50,12 +50,16 @@ class App extends Component {
                 />
           <RaisedButton label="Submit" type="submit"/><br/><br/><br/>
         </form>
+        <div className="Option">
+          {this.state.csvReady&& <RaisedButton label="Download"
+                onClick={this.handleDownload.bind(this)}/>}
+        </div>
+        <br/><br/><br/>
       </div>
     </MuiThemeProvider>
     );
   }
   handleChange(e,index,value){
-    var name=e.target.id
     this.setState({[e.target.id]: index});
   }
   handleStartDateChange(e,date){
@@ -74,6 +78,8 @@ class App extends Component {
     this.setState({'end_date': format_date});
   }
   handleSubmit(e){
+    // csvReady=false;
+    this.setState({'csvReady':false});
     e.preventDefault();
     console.log(this.state);
     fetch('http://127.0.0.1:5000/api/form', {
@@ -82,16 +88,24 @@ class App extends Component {
          {"Content-Type": "application/json"}
       ),
       body: JSON.stringify(this.state),
-    }).then(function (result) {
+    }).then((result) =>{
     console.log('csv ready');
+    // csvReady=true;
+    this.setState({'csvReady':true});
     });
-    fetch('http://127.0.0.1:5000/api/sentiment', {
+  }
+  handleDownload(e,index,value){
+    e.preventDefault();
+    fetch('http://127.0.0.1:5000/api/getCSV', {
       method: 'POST',
       headers: new Headers(
          {"Content-Type": "application/json"}
       ),
-    }).then(function (result) {
-    console.log('ok');
+      body: JSON.stringify(this.state),
+    }).then((result) =>{
+    console.log('csv ready');
+    // csvReady=true;
+    this.setState({'csvReady':true});
     });
   }
 }
