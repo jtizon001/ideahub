@@ -94,15 +94,15 @@ class App extends Component {
     // csvReady=true;
     this.setState({'csvReady':true});
     });
-
-    // fetch('http://127.0.0.1:5000/api/sentiment', {
-    //   method: 'POST',
-    //   headers: new Headers(
-    //      {"Content-Type": "application/json"}
-    //   ),
-    // }).then(function (result) {
-    // console.log('ok');
-    // });
+//     fetch('http://127.0.0.1:5000/api/sentiment', {
+//       method: 'POST',
+//       headers: new Headers(
+//          {"Content-Type": "application/json"}
+//       ),
+//       body: JSON.stringify(this.state),
+//     }).then(function (result) {
+//     console.log('Tweet isolated');
+//     });
   }
 
   handleDownload(e){
