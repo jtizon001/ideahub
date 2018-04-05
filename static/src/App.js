@@ -11,6 +11,7 @@ class App extends Component {
   state = {
     checked: false,
     csvReady: false,
+    currentFileName: '',
   }
   render() {
     return (
@@ -52,7 +53,9 @@ class App extends Component {
         </form>
         <div className="Option">
           {this.state.csvReady&& <RaisedButton label="Download"
-                onClick={this.handleDownload.bind(this)}/>}
+                   href="./test.pdf" download={this.state.currentFileName}/>}
+          {this.state.csvReady&& <RaisedButton label="See Analysis"
+                   onClick={this.handleAnalysis.bind(this)}/>}
         </div>
         <br/><br/><br/>
       </div>
@@ -79,9 +82,11 @@ class App extends Component {
     this.setState({'end_date': format_date});
   }
   handleSubmit(e){
-    // csvReady=false;
-    this.setState({'csvReady':false});
     e.preventDefault();
+    this.setState({'csvReady':false});
+    var file = this.state.filename? this.state.filename+'.csv' : 'output_got.csv';
+    this.setState({'currentFileName':file});
+    // console.log(this.state.currentFileName);
     console.log(this.state);
     fetch('http://127.0.0.1:5000/api/form', {
       method: 'POST',
@@ -95,18 +100,21 @@ class App extends Component {
     this.setState({'csvReady':true});
     });
   }
-  handleDownload(e,index,value){
+  // handleDownload(e,index,value){
+  //   e.preventDefault();
+  //   console.log(this.state.currentFileName);
+  //   window.open(this.state.currentFileName)
+  // }
+  handleAnalysis(e,index,value){
     e.preventDefault();
-    fetch('http://127.0.0.1:5000/api/getCSV', {
+    fetch('http://127.0.0.1:5000/api/sentiment', {
       method: 'POST',
       headers: new Headers(
          {"Content-Type": "application/json"}
       ),
       body: JSON.stringify(this.state),
     }).then((result) =>{
-    console.log('csv ready');
-    // csvReady=true;
-    this.setState({'csvReady':true});
+    console.log('analysis sent');
     });
   }
 }
