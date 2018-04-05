@@ -1,7 +1,8 @@
-import json
+# import json
 from watson_developer_cloud import NaturalLanguageUnderstandingV1
 from watson_developer_cloud.natural_language_understanding_v1 import Features, EntitiesOptions, KeywordsOptions
 from csv_manipulator import TweetCsv
+import codecs
 
 
 def post(tweet):
@@ -22,18 +23,24 @@ def post(tweet):
           sentiment=True,
           limit=2)))
 
-    #print json.dumps(response, indent=2)
+    # print json.dumps(response, indent=2)
     return response
 
 
 def watson(path):
-
-
     data = TweetCsv(path)
-    print('Stripped tweet')
     tweet = data.get_cell(5, 2)
+    print('Stripped tweet')
     resp = post(tweet)
     print('Sent analysis complete: "%s"' % resp)
-    # Returns the sentiment json to app.py
+    store_file('output_got_sent', resp)
     return resp
+
+
+def store_file(name, data):
+    sentOutput = codecs.open('./outputfiles/' + name, "w+", "utf-8")
+    sentOutput.write(repr(data))
+    sentOutput.close()
+    print('Sent analysis stored...')
+
 
