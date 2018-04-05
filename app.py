@@ -39,9 +39,9 @@ def scrapeForm():
         tweet_amount = formArg.get('tweet_amount')
         if tweet_amount:
             commandList.extend(['--maxtweets', str(tweet_amount)])
-        filename = formArg.get('filename')
-        if filename:
-            commandList.extend(['--output', str(filename)])
+        # filename = formArg.get('filename')
+        # if filename:
+        #     commandList.extend(['--output', str(filename)])
         keyword = formArg.get('keyword')
         if keyword:
             commandList.extend(['--querysearch', str(keyword)])
@@ -60,7 +60,7 @@ def scrapeForm():
 
         # Makes call to Exporter.py main
         path = Exporter.main(commandList)
-        sent_tweet = getSentiment('./outputfiles/' + path)
+        #sent_tweet = getSentiment('./outputfiles/' + path)
         res = flask.make_response(jsonify(res='hello'))
 
     res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
@@ -86,10 +86,19 @@ def getCSV():
     return flask.send_from_directory('outputfiles', fileName, as_attachment=True)
 
 
-@app.route('/api/sentiment', methods=['GET, POST'])
-def getSentiment(path):
-    sent_tweet = watson(path)
-    return sent_tweet
+@app.route('/api/sentiment', methods=['GET', 'POST', 'OPTIONS'])
+def getSentiment():
+    if request.method == 'OPTIONS':
+        res = flask.make_response()
+    if request.method == 'POST':
+        formArg = request.get_json()
+        res = flask.make_response(jsonify(res='hello'))
+        watson('./outputfiles/output_got.csv')
+    res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
+    res.headers['Access-Control-Allow-Methods'] = 'POST,GET,OPTIONS'
+    res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
+    return res
+
 
 
 if __name__ == '__main__':

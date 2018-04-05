@@ -11,6 +11,7 @@ class App extends Component {
   state = {
     checked: false,
     csvReady: false,
+    currentFileName: '',
   }
   render() {
     return (
@@ -51,15 +52,17 @@ class App extends Component {
           <RaisedButton label="Submit" type="submit"/><br/><br/><br/>
         </form>
         <div className="Option">
-          <form onSubmit={this.handleDownload.bind(this)}>
-            {this.state.csvReady&& <RaisedButton label="Download" type="submit"/>}
-          </form>
+          {this.state.csvReady&& <RaisedButton label="Download"
+                   href="./test.pdf" download={this.state.currentFileName}/>}
+          {this.state.csvReady&& <RaisedButton label="See Analysis"
+                   onClick={this.handleAnalysis.bind(this)}/>}
         </div>
         <br/><br/><br/>
       </div>
     </MuiThemeProvider>
     );
   }
+
   handleChange(e,index,value){
     this.setState({[e.target.id]: index});
   }
@@ -79,9 +82,11 @@ class App extends Component {
     this.setState({'end_date': format_date});
   }
   handleSubmit(e){
-    // csvReady=false;
-    this.setState({'csvReady':false});
     e.preventDefault();
+    this.setState({'csvReady':false});
+    var file = this.state.filename? this.state.filename+'.csv' : 'output_got.csv';
+    this.setState({'currentFileName':file});
+    // console.log(this.state.currentFileName);
     console.log(this.state);
     fetch('http://127.0.0.1:5000/api/form', {
       method: 'POST',
@@ -94,29 +99,22 @@ class App extends Component {
     // csvReady=true;
     this.setState({'csvReady':true});
     });
-//     fetch('http://127.0.0.1:5000/api/sentiment', {
-//       method: 'POST',
-//       headers: new Headers(
-//          {"Content-Type": "application/json"}
-//       ),
-//       body: JSON.stringify(this.state),
-//     }).then(function (result) {
-//     console.log('Tweet isolated');
-//     });
   }
-
-  handleDownload(e){
+  // handleDownload(e,index,value){
+  //   e.preventDefault();
+  //   console.log(this.state.currentFileName);
+  //   window.open(this.state.currentFileName)
+  // }
+  handleAnalysis(e,index,value){
     e.preventDefault();
-    console.log(this.state);
-    fetch('http://127.0.0.1:5000/api/getCSV', {
+    fetch('http://127.0.0.1:5000/api/sentiment', {
       method: 'POST',
       headers: new Headers(
-          {"Content-Type": "application/json"}
+         {"Content-Type": "application/json"}
       ),
       body: JSON.stringify(this.state),
     }).then((result) =>{
-      console.log("file sent");
-      
+    console.log('analysis sent');
     });
   }
 }
