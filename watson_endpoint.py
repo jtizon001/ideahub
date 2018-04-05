@@ -1,10 +1,11 @@
-# import json
+import json
 from watson_developer_cloud import NaturalLanguageUnderstandingV1
-from watson_developer_cloud.natural_language_understanding_v1 import Features, EntitiesOptions, KeywordsOptions
+from watson_developer_cloud.natural_language_understanding_v1 import Features, EntitiesOptions, KeywordsOptions, SentimentOptions
 from csv_manipulator import TweetCsv
 import codecs
 
 
+# Communicates with Watson NLU API
 def post(tweet):
     natural_language_understanding = NaturalLanguageUnderstandingV1(
       username="cacede17-f1de-4533-bde9-7f3554bf7030",
@@ -17,19 +18,20 @@ def post(tweet):
         entities=EntitiesOptions(
           emotion=True,
           sentiment=True,
-          limit=2),
+          limit=5),
+        sentiment=SentimentOptions(
+          document=True),
         keywords=KeywordsOptions(
           emotion=True,
           sentiment=True,
-          limit=2)))
-
-    # print json.dumps(response, indent=2)
+          limit=5)))
     return response
 
 
+# Handler for stripping tweets, posting, and storing
 def watson(path):
     data = TweetCsv(path)
-    tweet = data.get_cell(5, 2)
+    tweet = data.isolate_tweets()
     print('Stripped tweet')
     resp = post(tweet)
     print('Sent analysis complete: "%s"' % resp)
@@ -37,10 +39,12 @@ def watson(path):
     return resp
 
 
+# Stores file in output files
 def store_file(name, data):
-    sentOutput = codecs.open('./outputfiles/' + name, "w+", "utf-8")
-    sentOutput.write(repr(data))
-    sentOutput.close()
+    output = codecs.open('./outputfiles/' + name + '.txt', "w+", "utf-8")
+    output.write(repr(data))
+    print('Sent analysis complete: "%s"' % json.dumps(data, sort_keys=True, indent=4))
+    output.close()
     print('Sent analysis stored...')
 
 
