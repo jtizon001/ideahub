@@ -53,7 +53,7 @@ class App extends Component {
         </form>
         <div className="Option">
           {this.state.csvReady&& <RaisedButton label="Download"
-                   href="./test.pdf" download={this.state.currentFileName}/>}
+                   href='../../outputfiles/output_got.csv' download='test.csv'/>}
           {this.state.csvReady&& <RaisedButton label="See Analysis"
                    onClick={this.handleAnalysis.bind(this)}/>}
         </div>
