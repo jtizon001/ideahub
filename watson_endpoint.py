@@ -1,6 +1,6 @@
 import json
 from watson_developer_cloud import NaturalLanguageUnderstandingV1
-from watson_developer_cloud.natural_language_understanding_v1 import Features, EntitiesOptions, KeywordsOptions, SentimentOptions
+from watson_developer_cloud.natural_language_understanding_v1 import Features, EntitiesOptions, KeywordsOptions, SentimentOptions, EmotionOptions
 from csv_manipulator import TweetCsv
 import codecs
 
@@ -24,7 +24,9 @@ def post(tweet):
         keywords=KeywordsOptions(
           emotion=True,
           sentiment=True,
-          limit=5)))
+          limit=5),
+        emotion=EmotionOptions(
+            document=True)))
     return response
 
 
