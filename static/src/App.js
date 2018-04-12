@@ -6,6 +6,9 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
 import Checkbox from 'material-ui/Checkbox'
+import ReactDOM from 'react-dom';
+import C3Chart from 'react-c3js';
+import './c3.css';
 
 class App extends Component {
   state = {
@@ -113,8 +116,39 @@ class App extends Component {
          {"Content-Type": "application/json"}
       ),
       body: JSON.stringify(this.state),
-    }).then((result) =>{
-    console.log('analysis sent');
+    }).then(res => res.json())
+    .then(res =>{
+      console.log('analysis sent');
+      console.log(res);
+
+      const overall_sent = {
+        columns: [
+          [res['sentiment']['document']['label'], Math.abs(res['sentiment']['document']['score'])*100]
+        ],
+        type: 'gauge'
+      },
+      gauge = {
+        title: "Overall Sentiment"
+      };
+      ReactDOM.render(<C3Chart data={overall_sent} gauge={gauge} />, document.getElementById("document_sent"));
+
+      const entities = {
+        columns: [
+          ['anger', res['entities'][0]['emotion']['anger']],
+          ['disgust', res['entities'][0]['emotion']['disgust']],
+          ['fear', res['entities'][0]['emotion']['fear']],
+          ['joy', res['entities'][0]['emotion']['joy']],
+          ['sadness', res['entities'][0]['emotion']['sadness']]
+        ],
+        type: 'bar'
+      },
+      bar = {
+        width: {
+          ratio: 0.5
+        },
+        title: res['entities'][0]['text']
+      };
+      ReactDOM.render(<C3Chart data={entities} bar={bar} />, document.getElementById('entities_sent'));
     });
   }
 }
