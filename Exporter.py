@@ -26,7 +26,7 @@ def main(argv):
         print("Opts:", opts)
 
         tweetCriteria = got.manager.TweetCriteria()
-        outputFileName = "output_got.csv"
+        outputFileName = "output_got"
 
         for opt, arg in opts:
             if opt == '--username':
@@ -59,7 +59,7 @@ def main(argv):
             elif opt == '--output':
                 outputFileName = arg + '.csv'
 
-        outputFile = codecs.open('./outputfiles/' + outputFileName, "w+", "utf-8")
+        outputFile = codecs.open('./outputfiles/' + outputFileName + '.csv', "w+", "utf-8")
 
         outputFile.write('username,date,retweets,favorites,text,geo,mentions,hashtags,id,permalink')
 
