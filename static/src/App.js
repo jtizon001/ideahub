@@ -136,11 +136,11 @@ class App extends Component {
       /*------------------- DOCUMENT EMOTIONS BREAKDOWN (DONUT) ----------------------*/
       const doc_emotions_donut = {
         columns: [
-          ['anger', res['emotion']['document']['emotion']['anger']],
+          ['sadness', res['emotion']['document']['emotion']['sadness']],
           ['disgust', res['emotion']['document']['emotion']['disgust']],
-          ['fear', res['emotion']['document']['emotion']['fear']],
           ['joy', res['emotion']['document']['emotion']['joy']],
-          ['sadness', res['emotion']['document']['emotion']['sadness']]
+          ['anger', res['emotion']['document']['emotion']['anger']],
+          ['fear', res['emotion']['document']['emotion']['fear']]
         ],
         type: 'donut'
       },
@@ -152,12 +152,12 @@ class App extends Component {
       /*------------------- DOCUMENT EMOTIONS BREAKDOWN (BAR) -----------------------*/
       const doc_emotions_bar = {
         columns: [
-          //['x', res['emotion']['document']['emotion']['anger'], res['emotion']['document']['emotion']['disgust'], res['emotion']['document']['emotion']['fear'], res['emotion']['document']['emotion']['joy'], res['emotion']['document']['emotion']['anger']]
-          ['anger', res['emotion']['document']['emotion']['anger']],
+          //['x', res['emotion']['document']['emotion']['sadness'], res['emotion']['document']['emotion']['disgust'], res['emotion']['document']['emotion']['joy'], res['emotion']['document']['emotion']['anger'], res['emotion']['document']['emotion']['fear']]
+          ['sadness', res['emotion']['document']['emotion']['sadness']],
           ['disgust', res['emotion']['document']['emotion']['disgust']],
-          ['fear', res['emotion']['document']['emotion']['fear']],
           ['joy', res['emotion']['document']['emotion']['joy']],
-          ['sadness', res['emotion']['document']['emotion']['sadness']]
+          ['anger', res['emotion']['document']['emotion']['anger']],
+          ['fear', res['emotion']['document']['emotion']['fear']]
         ],
         type: 'bar',
         /*
@@ -174,7 +174,7 @@ class App extends Component {
         /*
         x: {
           type: 'category',
-          categories: ['anger', 'disgust', 'fear', 'joy', 'sadness']
+          categories: ['sadness', 'disgust', 'joy', 'anger', 'fear']
         },
         */
         rotated: true
