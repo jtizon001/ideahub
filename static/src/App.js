@@ -121,6 +121,7 @@ class App extends Component {
       console.log('analysis sent');
       console.log(res);
 
+      /*--------------------- OVERALL DOCUMENT SENTIMENT ------------------*/
       const overall_sent = {
         columns: [
           [res['sentiment']['document']['label'], Math.abs(res['sentiment']['document']['score'])*100]
@@ -132,23 +133,58 @@ class App extends Component {
       };
       ReactDOM.render(<C3Chart data={overall_sent} gauge={gauge} />, document.getElementById("document_sent"));
 
-      const entities = {
+      /*------------------- DOCUMENT EMOTIONS BREAKDOWN (DONUT) ----------------------*/
+      const doc_emotions_donut = {
         columns: [
-          ['anger', res['entities'][0]['emotion']['anger']],
-          ['disgust', res['entities'][0]['emotion']['disgust']],
-          ['fear', res['entities'][0]['emotion']['fear']],
-          ['joy', res['entities'][0]['emotion']['joy']],
-          ['sadness', res['entities'][0]['emotion']['sadness']]
+          ['anger', res['emotion']['document']['emotion']['anger']],
+          ['disgust', res['emotion']['document']['emotion']['disgust']],
+          ['fear', res['emotion']['document']['emotion']['fear']],
+          ['joy', res['emotion']['document']['emotion']['joy']],
+          ['sadness', res['emotion']['document']['emotion']['sadness']]
         ],
-        type: 'bar'
+        type: 'donut'
+      },
+      donut = {
+        title: "Emotions Breakdown"
+      };
+      ReactDOM.render(<C3Chart data={doc_emotions_donut} donut={donut} />, document.getElementById('document_emotions_donut'));
+
+      /*------------------- DOCUMENT EMOTIONS BREAKDOWN (BAR) -----------------------*/
+      const doc_emotions_bar = {
+        columns: [
+          //['x', res['emotion']['document']['emotion']['anger'], res['emotion']['document']['emotion']['disgust'], res['emotion']['document']['emotion']['fear'], res['emotion']['document']['emotion']['joy'], res['emotion']['document']['emotion']['anger']]
+          ['anger', res['emotion']['document']['emotion']['anger']],
+          ['disgust', res['emotion']['document']['emotion']['disgust']],
+          ['fear', res['emotion']['document']['emotion']['fear']],
+          ['joy', res['emotion']['document']['emotion']['joy']],
+          ['sadness', res['emotion']['document']['emotion']['sadness']]
+        ],
+        type: 'bar',
+        /*
+        colors: {
+          anger: '#ff0000',
+          disgust: '#556b2f',
+          fear: '#800080',
+          joy: '#ffff00',
+          sadness: '#1f77b4'
+        }
+        */
+      },
+      axis = {
+        /*
+        x: {
+          type: 'category',
+          categories: ['anger', 'disgust', 'fear', 'joy', 'sadness']
+        },
+        */
+        rotated: true
       },
       bar = {
-        width: {
-          ratio: 0.5
-        },
-        title: res['entities'][0]['text']
+        width: 50,
+        title: 'Emotions'
       };
-      ReactDOM.render(<C3Chart data={entities} bar={bar} />, document.getElementById('entities_sent'));
+
+      ReactDOM.render(<C3Chart data={doc_emotions_bar} bar={bar} axis={axis} />, document.getElementById('document_emotions_bar'));
     });
   }
 }
