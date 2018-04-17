@@ -6,6 +6,9 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
 import Checkbox from 'material-ui/Checkbox'
+import ReactDOM from 'react-dom';
+import C3Chart from 'react-c3js';
+import './c3.css';
 
 class App extends Component {
   state = {
@@ -113,8 +116,75 @@ class App extends Component {
          {"Content-Type": "application/json"}
       ),
       body: JSON.stringify(this.state),
-    }).then((result) =>{
-    console.log('analysis sent');
+    }).then(res => res.json())
+    .then(res =>{
+      console.log('analysis sent');
+      console.log(res);
+
+      /*--------------------- OVERALL DOCUMENT SENTIMENT ------------------*/
+      const overall_sent = {
+        columns: [
+          [res['sentiment']['document']['label'], Math.abs(res['sentiment']['document']['score'])*100]
+        ],
+        type: 'gauge'
+      },
+      gauge = {
+        title: "Overall Sentiment"
+      };
+      ReactDOM.render(<C3Chart data={overall_sent} gauge={gauge} />, document.getElementById("document_sent"));
+
+      /*------------------- DOCUMENT EMOTIONS BREAKDOWN (DONUT) ----------------------*/
+      const doc_emotions_donut = {
+        columns: [
+          ['sadness', res['emotion']['document']['emotion']['sadness']],
+          ['disgust', res['emotion']['document']['emotion']['disgust']],
+          ['joy', res['emotion']['document']['emotion']['joy']],
+          ['anger', res['emotion']['document']['emotion']['anger']],
+          ['fear', res['emotion']['document']['emotion']['fear']]
+        ],
+        type: 'donut'
+      },
+      donut = {
+        title: "Emotions Breakdown"
+      };
+      ReactDOM.render(<C3Chart data={doc_emotions_donut} donut={donut} />, document.getElementById('document_emotions_donut'));
+
+      /*------------------- DOCUMENT EMOTIONS BREAKDOWN (BAR) -----------------------*/
+      const doc_emotions_bar = {
+        columns: [
+          //['x', res['emotion']['document']['emotion']['sadness'], res['emotion']['document']['emotion']['disgust'], res['emotion']['document']['emotion']['joy'], res['emotion']['document']['emotion']['anger'], res['emotion']['document']['emotion']['fear']]
+          ['sadness', res['emotion']['document']['emotion']['sadness']],
+          ['disgust', res['emotion']['document']['emotion']['disgust']],
+          ['joy', res['emotion']['document']['emotion']['joy']],
+          ['anger', res['emotion']['document']['emotion']['anger']],
+          ['fear', res['emotion']['document']['emotion']['fear']]
+        ],
+        type: 'bar',
+        /*
+        colors: {
+          anger: '#ff0000',
+          disgust: '#556b2f',
+          fear: '#800080',
+          joy: '#ffff00',
+          sadness: '#1f77b4'
+        }
+        */
+      },
+      axis = {
+        /*
+        x: {
+          type: 'category',
+          categories: ['sadness', 'disgust', 'joy', 'anger', 'fear']
+        },
+        */
+        rotated: true
+      },
+      bar = {
+        width: 50,
+        title: 'Emotions'
+      };
+
+      ReactDOM.render(<C3Chart data={doc_emotions_bar} bar={bar} axis={axis} />, document.getElementById('document_emotions_bar'));
     });
   }
 }
