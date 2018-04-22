@@ -8,9 +8,9 @@ import codecs
 # Communicates with Watson NLU API
 def post(tweet):
     natural_language_understanding = NaturalLanguageUnderstandingV1(
-      username="cacede17-f1de-4533-bde9-7f3554bf7030",
-      password="frAC0V0rUWTD",
-      version='2017-02-27')
+        username='912e28dd-f8ff-4ab5-9645-557ff6b7c597',
+        password='N7vecbexz7gQ',
+        version='2017-02-27')
 
     response = natural_language_understanding.analyze(
       text=tweet,
