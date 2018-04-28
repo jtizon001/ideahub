@@ -126,7 +126,11 @@ class App extends Component {
         columns: [
           [res['sentiment']['document']['label'], Math.abs(res['sentiment']['document']['score'])*100]
         ],
-        type: 'gauge'
+        type: 'gauge',
+        colors: {
+          'positive': '#18d223',
+          'negative': '#d62728'
+        },
       },
       gauge = {
         title: "Overall Sentiment"
@@ -151,13 +155,17 @@ class App extends Component {
 
       /*------------------- DOCUMENT EMOTIONS BREAKDOWN (BAR) -----------------------*/
       const doc_emotions_bar = {
+        x: 'x',
         columns: [
-          //['x', res['emotion']['document']['emotion']['sadness'], res['emotion']['document']['emotion']['disgust'], res['emotion']['document']['emotion']['joy'], res['emotion']['document']['emotion']['anger'], res['emotion']['document']['emotion']['fear']]
-          ['sadness', res['emotion']['document']['emotion']['sadness']],
-          ['disgust', res['emotion']['document']['emotion']['disgust']],
-          ['joy', res['emotion']['document']['emotion']['joy']],
-          ['anger', res['emotion']['document']['emotion']['anger']],
-          ['fear', res['emotion']['document']['emotion']['fear']]
+          ['x', 'sadness', 'disgust', 'joy', 'anger', 'fear'],
+          ['sadness', res['emotion']['document']['emotion']['sadness'], 0, 0, 0, 0],
+          ['disgust', 0, res['emotion']['document']['emotion']['disgust'], 0, 0, 0], 
+          ['joy', 0, 0, res['emotion']['document']['emotion']['joy'], 0, 0], 
+          ['anger', 0, 0, 0, res['emotion']['document']['emotion']['anger'], 0], 
+          ['fear', 0, 0, 0, 0, res['emotion']['document']['emotion']['fear']]
+        ],
+        groups: [
+          ['sadness', 'disgust', 'joy', 'anger', 'fear']
         ],
         type: 'bar',
         /*
@@ -171,12 +179,9 @@ class App extends Component {
         */
       },
       axis = {
-        /*
         x: {
-          type: 'category',
-          categories: ['sadness', 'disgust', 'joy', 'anger', 'fear']
+          type: 'category'
         },
-        */
         rotated: true
       },
       bar = {
