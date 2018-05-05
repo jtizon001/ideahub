@@ -2,6 +2,8 @@
 
 ## Details
 
+An analysis dashboard that provides social media mining, data analysis, and visualization methods. The intended target data deals with the efficacy and safety of vaccines on major social media applications and message boards with an emphasis on Twitter; however, any topic can be analyzed with this tool. We will track keywords, prominent entities, and hashtags pertaining to the parameters inputed.
+
 ## User Level
 ### Access application
 Users can find the application at:
@@ -28,11 +30,9 @@ The optional fields that narrow the target tweets to scrape are:
 - CSV file name, which will act as the download name in the case a user wants to store the scraped Twitter data locally.
 
 ### Options
-Get Tweets
-See Analysis
-Download CSV
-
-### Analysis 
+- Submit; after entering the required fields in the main forum the user can click submit, which is an event that triggers the Tweet Scrapper. After the tweets are scrapped successfully the two following options will appear.
+- Download; onclick event that will download the scrapped tweets as a CSV.
+- See Analysis; onclick event that gets sentiment analysis of the scrapped tweets from Watson’s NLU library and renders four visualizations under the original forum that display sentiment for the top five keywords and entities mentioned in the dataset, as well as the overall document sentiment.
 
 ## Admin Level
 ### Installing Project Locally
@@ -43,6 +43,7 @@ There is an option to Clone or Download the repository from Github. If Downloade
 ```
 cd (path) 
 git clone https://github.com/jtizon001/ideahub.git
+git remote add origin https://github.com/jtizon001/ideahub.git
 ``` 
 
 After the project is cloned onto the user’s local machine several dependencies must be installed in the both main project directory as well as in the static directory. Must have pip and node installed on local machine.
@@ -58,3 +59,21 @@ Then users can test that all dependencies are correct by deploying the applicati
 ```npm run start```
 
 The project should then open in a browser window hosted on localhost.
+
+
+
+### Project Management
+Commands to Pull while in the main project directory.
+
+```
+git pull
+```
+Commands to Push tracked changes to master branch of remote repository
+
+```
+git add .
+git commit -m “message for team with what was updated”
+git push origin master
+```
+
+### Deployment
