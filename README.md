@@ -36,23 +36,24 @@ Download CSV
 ## Admin Level
 ### Installing Project Locally
 First Installation (Clone from GitHub)
+
 There is an option to Clone or Download the repository from Github. If Downloaded the project should appear in the user’s local “Downloads” file and they can move the project to any location by copying and pasting or dragging and dropping. Otherwise users can navigate, using Command Line, to the desired location and clone the repository using the commands: 
 
-‘’’
+```
 cd (path) 
 git clone https://github.com/jtizon001/ideahub.git
-’’’ 
+``` 
 
 After the project is cloned onto the user’s local machine several dependencies must be installed in the both main project directory as well as in the static directory. Must have pip and node installed on local machine.
-- While in the main project directory run ‘’’pip install requirements.txt’’’, which contains all of the necessary python packages.
-- While in the static directory run ‘’’npm install’’’, which should install all of the necessary JavaScript dependencies.
+- While in the main project directory run ```pip install requirements.txt```, which contains all of the necessary python packages.
+- While in the static directory run ```npm install```, which should install all of the necessary JavaScript dependencies.
 
 Then users can test that all dependencies are correct by deploying the application on their localhost. The steps are as follow:
 - Navigate to the main project directory and run the command 
 
-‘’’python app.py’’’
+```python app.py```
 - Open another command line window and navigate to the static folder. Then run the command
 
-‘’’npm run start’’’
+```npm run start```
 
 The project should then open in a browser window hosted on localhost.
