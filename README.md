@@ -12,6 +12,7 @@ Users can find the application at:
 Once on the web page users are presented with several fields, which act as parameters for the custom Twitter Scraping code implemented. The custom code documentation can be found at:  
 
 ```https://github.com/Jefferson-Henrique/GetOldTweets-python```
+
 The mandatory fields that MUST be filled out for application to work as intended are:
 - Tweet Amount, which represents the number of tweets to be scrapped
 
