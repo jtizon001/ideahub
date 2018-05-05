@@ -30,7 +30,7 @@ The optional fields that narrow the target tweets to scrape are:
 ### Options
 - Submit; after entering the required fields in the main forum the user can click submit, which is an event that triggers the Tweet Scraper. After the tweets are scraped successfully the two following options will appear.
 - Download; onclick event that will download the scraped tweets as a CSV.
-- See Analysis; onclick event that gets sentiment analysis of the scraped tweets from Watson’s NLU library and renders four visualizations under the original forum that display sentiment for the top five keywords and entities mentioned in the dataset, as well as the overall document sentiment.
+- See Analysis; onclick event that gets sentiment analysis of the scraped tweets from Watson’s NLU library and renders four visualizations under the original forum that display sentiment for the top five keywords and entities mentioned in the dataset, as well as the overall document sentiment. The documentation for Watson's NLU API can be found at https://www.ibm.com/watson/developercloud/natural-language-understanding/api/v1/
 
 ## Admin Level
 ### Installing Project Locally
