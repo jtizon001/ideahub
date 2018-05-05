@@ -63,12 +63,12 @@ The project should then open in a browser window on localhost.
 
 
 ### Project Management
-Commands to Pull while in the main project directory.
+Command to Pull while in the main project directory.
 
 ```
 git pull
 ```
-Commands to Push tracked changes to master branch of remote repository
+Commands to Push tracked changes to master branch of remote repository while in the main project directory
 
 ```
 git add .
@@ -77,3 +77,4 @@ git push origin master
 ```
 
 ### Deployment
+To redeploy the application on the Computer Science Department's blade follow:
