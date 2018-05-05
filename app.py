@@ -1,5 +1,5 @@
 import flask
-from flask import Flask, request, url_for, jsonify, json, make_response, current_app
+from flask import Flask, request, url_for, jsonify, json, make_response, current_app,send_file
 from flask_restful import reqparse, abort, Api, Resource
 from flask_cors import CORS, cross_origin
 import Exporter
@@ -14,8 +14,9 @@ def index():
     return flask.send_from_directory('static', 'index.html')
 
 
-@app.route('/api/form', methods=['GET', 'POST', 'OPTIONS'])
-def scrapeForm():
+@app.route('/api/form/<x>', methods=['GET', 'POST', 'OPTIONS'])
+def scrapeForm(x):
+    print(x)
     user = ''
     tweet_amount = ''
     checked = 'false'
@@ -75,15 +76,14 @@ def getCSV():
         res = flask.make_response()
     if (request.method == 'POST'):
         formArg = request.get_json()
-        fileName = formArg.get('filename') + ".csv"
-        res = flask.make_response()
-
-    res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
-    res.headers['Access-Control-Allow-Methods'] = 'POST,GET,OPTIONS'
-    res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
-    res.headers['Content-Disposition'] = 'attachment; filename=' + fileName
-    res.headers['Content-Type'] = 'application/octet-stream'
-    return flask.send_from_directory('outputfiles', fileName, as_attachment=True)
+    #     res = flask.make_response()
+    #
+    # res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
+    # res.headers['Access-Control-Allow-Methods'] = 'POST,GET,OPTIONS'
+    # res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
+    # res.headers['Content-Type'] = 'application/octet-stream'
+    # return flask.send_from_directory('outputfiles', 'output_got.csv', as_attachment=True)
+    return send_file('./outputfiles/output_got.csv', mimetype='text/csv',attachment_filename='test.csv',as_attachment=True)
 
 
 @app.route('/api/sentiment', methods=['GET', 'POST', 'OPTIONS'])
