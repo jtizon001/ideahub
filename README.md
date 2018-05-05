@@ -18,7 +18,7 @@ Once on the web page users are presented with several fields, which act as param
 The mandatory fields that MUST be filled out for application to work as intended are:
 - Tweet Amount, which represents the number of tweets to be scrapped
 
-And one or both of the follow
+And one or both of the following
 - Keywords, which will scrape tweets that include the keyword.
 - Username, which will scrape recent tweets from a specific users account.
 
