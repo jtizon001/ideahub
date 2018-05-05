@@ -16,7 +16,7 @@ Once on the web page users are presented with several fields, which act as param
 ```https://github.com/Jefferson-Henrique/GetOldTweets-python```
 
 The mandatory fields that MUST be filled out for application to work as intended are:
-- Tweet Amount, which represents the number of tweets to be scrapped
+- Tweet Amount, which represents the number of tweets to be scraped
 
 And one or both of the following
 - Keywords, which will scrape tweets that include the keyword.
@@ -30,9 +30,9 @@ The optional fields that narrow the target tweets to scrape are:
 - CSV file name, which will act as the download name in the case a user wants to store the scraped Twitter data locally.
 
 ### Options
-- Submit; after entering the required fields in the main forum the user can click submit, which is an event that triggers the Tweet Scrapper. After the tweets are scrapped successfully the two following options will appear.
-- Download; onclick event that will download the scrapped tweets as a CSV.
-- See Analysis; onclick event that gets sentiment analysis of the scrapped tweets from Watson’s NLU library and renders four visualizations under the original forum that display sentiment for the top five keywords and entities mentioned in the dataset, as well as the overall document sentiment.
+- Submit; after entering the required fields in the main forum the user can click submit, which is an event that triggers the Tweet Scraper. After the tweets are scraped successfully the two following options will appear.
+- Download; onclick event that will download the scraped tweets as a CSV.
+- See Analysis; onclick event that gets sentiment analysis of the scraped tweets from Watson’s NLU library and renders four visualizations under the original forum that display sentiment for the top five keywords and entities mentioned in the dataset, as well as the overall document sentiment.
 
 ## Admin Level
 ### Installing Project Locally
@@ -58,7 +58,7 @@ Then users can test that all dependencies are correct by deploying the applicati
 
 ```npm run start```
 
-The project should then open in a browser window hosted on localhost.
+The project should then open in a browser window on localhost.
 
 
 
