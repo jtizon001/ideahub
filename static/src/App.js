@@ -66,7 +66,7 @@ class App extends Component {
           subtitle="Please refer to help for scraping criteria."
           subtitleStyle={{color:'orange', }}
         />
-        <form onSubmit={this.handleSubmit.bind(this)} >
+        <form onSubmit={this.handleSubmit.bind(this)}>
           <TextField hintText="Username" floatingLabelText="Username"
                 type="text" id="user"
                 onChange={this.handleChange.bind(this)}
@@ -92,11 +92,12 @@ class App extends Component {
                 onChange={this.handleEndDateChange.bind(this)}/>
           <TextField hintText="CSV file name" floatingLabelText="CSV file name"
                 type="text" id="filename"
-                onChange={this.handleChange.bind(this)}/><br/>
-          <Checkbox label="Top Tweets" checked={this.state.checked}
-                onCheck={this.handleCheck.bind(this)}
-                />
-          <RaisedButton label="Submit" type="submit"/><br/><br/><br/>
+                onChange={this.handleChange.bind(this)}/><br/><br/>
+          <Checkbox label="Top Tweets" checked={this.state.checked} labelPosition='left'
+                iconStyle={{marginLeft: '-40%',}}
+                labelStyle={{}}
+                onCheck={this.handleCheck.bind(this)}/><br/>
+          <RaisedButton label="Submit" type="submit"/><br/><br/>
         </form>
         </Card>
         <div className="Option">
@@ -226,8 +227,10 @@ class App extends Component {
       };
       const doc_senti_div=(
           <MuiThemeProvider >
-          <h1>Document Sntiment Breakdown</h1>
+          <Card style={{margin:'0 auto',width:'90%',}}>
+          <CardHeader title="Document Sntiment Breakdown" titleStyle={{fontSize:'2em',}}/>
           <div><C3Chart data={overall_sent} gauge={gauge} /></div>
+          </Card><br/><br/>
           </MuiThemeProvider>
       );
       ReactDOM.render(doc_senti_div, document.getElementById("document_sent"));
@@ -271,11 +274,13 @@ class App extends Component {
           }
           return(
             <MuiThemeProvider >
-            <h1>Keywords Breakdown</h1>
+            <Card style={{margin:'0 auto',width:'90%',}}>
+            <CardHeader title="Entities Breakdown" titleStyle={{fontSize:'2em',}}/>
             <Tabs
               id={this.state.keyTab}
               onChange={this.handleKeyTabChange.bind(this)}
             >{tabs}</Tabs>
+            </Card><br/><br/>
             </MuiThemeProvider>
           )
         }
@@ -324,11 +329,13 @@ class App extends Component {
           }
           return(
             <MuiThemeProvider >
-            <h1>Keywords Breakdown</h1>
+            <Card style={{margin:'0 auto',width:'90%',}}>
+            <CardHeader title="Keywords Breakdown" titleStyle={{fontSize:'2em',}}/>
             <Tabs
               id={this.state.keyTab}
               onChange={this.handleKeyTabChange.bind(this)}
             >{tabs}</Tabs>
+            </Card><br/><br/>
             </MuiThemeProvider>
           )
         }
@@ -354,8 +361,10 @@ class App extends Component {
       };
       const doc_emo_div=(
           <MuiThemeProvider >
-          <h1>Document Emotion Breakdown</h1>
+          <Card style={{margin:'0 auto',width:'90%',}}>
+          <CardHeader title="Document Emotion Breakdown Donut" titleStyle={{fontSize:'2em',}}/>
           <div><C3Chart data={doc_emotions_donut} donut={donut}/></div>
+          </Card><br/><br/>
           </MuiThemeProvider>
       );
       ReactDOM.render(doc_emo_div, document.getElementById('document_emotions_donut'));
@@ -378,8 +387,15 @@ class App extends Component {
         width: 50,
         title: 'Emotions'
       };
-
-      ReactDOM.render(<C3Chart data={doc_emotions_bar} bar={bar} axis={axis} />, document.getElementById('document_emotions_bar'));
+      const doc_emo_bar=(
+          <MuiThemeProvider >
+          <Card style={{margin:'0 auto',width:'90%',}}>
+          <CardHeader title="Document Emotion Breakdown Bar" titleStyle={{fontSize:'2em',}}/>
+          <div><C3Chart data={doc_emotions_bar} bar={bar} axis={axis} /></div>
+          </Card>
+          </MuiThemeProvider>
+      );
+      ReactDOM.render(doc_emo_bar, document.getElementById('document_emotions_bar'));
     }
     });
   }

@@ -4,6 +4,8 @@ from flask_restful import reqparse, abort, Api, Resource
 from flask_cors import CORS, cross_origin
 import Exporter
 from watson_endpoint import watson
+import ScrapeException
+import threading
 
 app = Flask(__name__)
 CORS(app)
@@ -40,6 +42,8 @@ def scrapeForm(x):
         tweet_amount = formArg.get('tweet_amount')
         if tweet_amount:
             commandList.extend(['--maxtweets', str(tweet_amount)])
+        else:
+            commandList.extend(['--maxtweets', str(2000)])
         # filename = formArg.get('filename')
         # if filename:
         #     commandList.extend(['--output', str(filename)])
@@ -58,7 +62,6 @@ def scrapeForm(x):
         end_dare = formArg.get('end_date')
         if end_date:
             commandList.extend(['--until', str(end_date)])
-
         # Makes call to Exporter.py main
         path = Exporter.main(commandList)
         #sent_tweet = getSentiment('./outputfiles/' + path)
@@ -76,13 +79,6 @@ def getCSV():
         res = flask.make_response()
     if (request.method == 'POST'):
         formArg = request.get_json()
-    #     res = flask.make_response()
-    #
-    # res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
-    # res.headers['Access-Control-Allow-Methods'] = 'POST,GET,OPTIONS'
-    # res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
-    # res.headers['Content-Type'] = 'application/octet-stream'
-    # return flask.send_from_directory('outputfiles', 'output_got.csv', as_attachment=True)
     return send_file('./outputfiles/output_got.csv', mimetype='text/csv',attachment_filename='test.csv',as_attachment=True)
 
 
