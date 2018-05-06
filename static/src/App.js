@@ -156,7 +156,6 @@ class App extends Component {
     ReactDOM.unmountComponentAtNode(document.getElementById('document_emotions_bar'));
     var file = this.state.filename? this.state.filename+'.csv' : 'output_got.csv';
     this.setState({'currentFileName':file});
-    console.log(this.state);
     this.setState({'submitted': true});
     fetch('http://127.0.0.1:5000/api/form/'+sessionNo, {
       method: 'POST',
@@ -174,7 +173,6 @@ class App extends Component {
   //handle download , upon return, server returns the csv file as json and download the file in browser with user given name
   handleDownload(e,index,value){
     e.preventDefault();
-    console.log(this.state.sessionNo);
     fetch('http://127.0.0.1:5000/api/getCSV', {
       method: 'POST',
       headers: new Headers(
@@ -182,7 +180,6 @@ class App extends Component {
       ),
       body: JSON.stringify(this.state),
     }).then((result) =>{
-    console.log(result);
     // csvReady=true;
     this.setState({'csvReady':true});
     return result.text();
@@ -211,7 +208,6 @@ class App extends Component {
     .then(res =>{
       this.setState({'analyzing':false});
       console.log('analysis sent');
-      console.log(res);
       if(res['error']==="WATSON_ERROR_HEADER"){
         ReactDOM.render(<h1>The tweets you tweeted can not be processed by Watson</h1>, document.getElementById("document_sent"));
       }else{
@@ -220,7 +216,11 @@ class App extends Component {
         columns: [
           [res['sentiment']['document']['label'], Math.abs(res['sentiment']['document']['score'])*100]
         ],
-        type: 'gauge'
+        type: 'gauge',
+        colors: {
+          'positive': '#18d223',
+          'negative': '#d62728'
+        },
       },
       gauge = {
         title: "Overall Sentiment"
@@ -237,7 +237,7 @@ class App extends Component {
       /*------------------- ENTITY EMOTIONS BREAKDOWN (DONUT) ----------------------*/
       var keyEmo='';
       var key_emotion=[5];
-      const entity_donut = {title: "Emotions Breakdown"};
+      const entity_donut = {title: "Entities Breakdown"};
       var createReactClass = require('create-react-class');
       var KeyTabs=createReactClass({
         getInitialState: function() {
@@ -266,7 +266,7 @@ class App extends Component {
               }else{
                 tabs.push(
                   <Tab label={res['entities'][i]['text']}>
-                  <p>Emotion Breakdown Not Avaiable for This Keyword</p>
+                  <p>Emotions Breakdown Not Available for This Entity</p>
                   </Tab>
                 );
               }
@@ -321,7 +321,7 @@ class App extends Component {
               }else{
                 tabs.push(
                   <Tab label={res['keywords'][i]['text']} >
-                  <p>Emotion Breakdown Not Avaiable for This Keyword</p>
+                  <p>Emotion Breakdown Not Available for This Keyword</p>
                   </Tab>
                 );
               }
@@ -371,16 +371,24 @@ class App extends Component {
 
       /*------------------- DOCUMENT EMOTIONS BREAKDOWN (BAR) -----------------------*/
       const doc_emotions_bar = {
+        x: 'x',
         columns: [
-          ['sadness', res['emotion']['document']['emotion']['sadness']],
-          ['disgust', res['emotion']['document']['emotion']['disgust']],
-          ['joy', res['emotion']['document']['emotion']['joy']],
-          ['anger', res['emotion']['document']['emotion']['anger']],
-          ['fear', res['emotion']['document']['emotion']['fear']]
+          ['x', 'sadness', 'disgust', 'joy', 'anger', 'fear'],
+          ['sadness', res['emotion']['document']['emotion']['sadness'], 0, 0, 0, 0],
+          ['disgust', 0, res['emotion']['document']['emotion']['disgust'], 0, 0, 0],
+          ['joy', 0, 0, res['emotion']['document']['emotion']['joy'], 0, 0],
+          ['anger', 0, 0, 0, res['emotion']['document']['emotion']['anger'], 0],
+          ['fear', 0, 0, 0, 0, res['emotion']['document']['emotion']['fear']]
+        ],
+        groups: [
+          ['sadness', 'disgust', 'joy', 'anger', 'fear']
         ],
         type: 'bar',
       },
       axis = {
+        x: {
+          type: 'category'
+        },
         rotated: true
       },
       bar = {
