@@ -1,99 +1,77 @@
-# Get Old Tweets Programatically
-A project written in Python to get old tweets, it bypass some limitations of Twitter Official API.
+# IDEAhub Documentation
 
 ## Details
-Twitter Official API has the bother limitation of time constraints, you can't get older tweets than a week. Some tools provide access to older tweets but in the most of them you have to spend some money before.
-I was searching other tools to do this job but I didn't found it, so after analyze how Twitter Search through browser works I understand its flow. Basically when you enter on Twitter page a scroll loader starts, if you scroll down you start to get more and more tweets, all through calls to a JSON provider. After mimic we get the best advantage of Twitter Search on browsers, it can search the deepest oldest tweets.
 
-## Prerequisites
-This package assumes using Python 2.x. The Python3 "got3" folder is maintained as experimental and is not officially supported.
+An analysis dashboard that provides social media mining, data analysis, and visualization methods. The intended target data deals with the efficacy and safety of vaccines on major social media applications and message boards with an emphasis on Twitter; however, any topic can be analyzed with this tool. We will track keywords, prominent entities, and hashtags pertaining to the parameters inputed.
 
-Expected package dependencies are listed in the "requirements.txt" file for PIP, you need to run the following command to get dependencies:
+## User Level
+### Access application
+Users can find the application at: http://dpbld08a.cs.unc.edu
+
+### Fields
+Once on the web page users are presented with several fields, which act as parameters for the custom Twitter Scraping code implemented. The custom code documentation can be found at:  https://github.com/Jefferson-Henrique/GetOldTweets-python
+
+
+The mandatory fields that MUST be filled out for application to work as intended are:
+- Tweet Amount, which represents the number of tweets to be scraped
+
+And one or both of the following
+- Keywords, which will scrape tweets that include the keyword.
+- Username, which will scrape recent tweets from a specific users account.
+
+The optional fields that narrow the target tweets to scrape are:
+- Location, which will scrape tweets posted from the corresponding geolocation.
+- Radius, which will scrape tweets within a certain radius of a corresponding geolocation. Requires Location field.
+- Start Date, which will scrape tweets starting from a specific date until either there are no more tweets to scrape or the Tweet amount is reached.
+- End Date, which will scrape tweets up to a specific date until either there are no more tweets to scrape or the Tweet amount is reached.
+- CSV file name, which will act as the download name in the case a user wants to store the scraped Twitter data locally.
+
+### Options
+- Submit; after entering the required fields in the main forum the user can click submit, which is an event that triggers the Tweet Scraper. After the tweets are scraped successfully the two following options will appear.
+- Download; onclick event that will download the scraped tweets as a CSV.
+- See Analysis; onclick event that gets sentiment analysis of the scraped tweets from Watson’s NLU library and renders four visualizations under the original forum that display sentiment for the top five keywords and entities mentioned in the dataset, as well as the overall document sentiment. The documentation for Watson's NLU API can be found at https://www.ibm.com/watson/developercloud/natural-language-understanding/api/v1/
+
+## Admin Level
+### Installing Project Locally
+First Installation (Clone from GitHub)
+
+There is an option to Clone or Download the repository from Github. If Downloaded the project should appear in the user’s local “Downloads” file and they can move the project to any location by copying and pasting or dragging and dropping. Otherwise users can navigate, using Command Line, to the desired location and clone the repository using the commands: 
+
 ```
-pip install -r requirements.txt
-```
-
-## Components
-- **Tweet:** Model class to give some informations about a specific tweet.
-  - id (str)
-  - permalink (str)
-  - username (str)
-  - text (str)
-  - date (date)
-  - retweets (int)
-  - favorites (int)
-  - mentions (str)
-  - hashtags (str)
-  - geo (str)
-
-- **TweetManager:** A manager class to help getting tweets in **Tweet**'s model.
-  - getTweets (**TwitterCriteria**): Return the list of tweets retrieved by using an instance of **TwitterCriteria**. 
-
-- **TwitterCriteria:** A collection of search parameters to be used together with **TweetManager**.
-  - setUsername (str): An optional specific username from a twitter account. Without "@".
-  - setSince (str. "yyyy-mm-dd"): A lower bound date to restrict search.
-  - setUntil (str. "yyyy-mm-dd"): An upper bound date to restrist search.
-  - setQuerySearch (str): A query text to be matched.
-  - setTopTweets (bool): If True only the Top Tweets will be retrieved.
-  - setNear(str): A reference location area from where tweets were generated.
-  - setWithin (str): A distance radius from "near" location (e.g. 15mi).
-  - setMaxTweets (int): The maximum number of tweets to be retrieved. If this number is unsetted or lower than 1 all possible tweets will be retrieved.
-  
-- **Main:** Examples of how to use.
-
-- **Exporter:** Export tweets to a csv file named "output_got.csv".
-
-## Examples of python usage
-- Get tweets by username
-``` python
-	tweetCriteria = got.manager.TweetCriteria().setUsername('barackobama').setMaxTweets(1)
-	tweet = got.manager.TweetManager.getTweets(tweetCriteria)[0]
-	  
-    print tweet.text
-```    
-- Get tweets by query search
-``` python
-	tweetCriteria = got.manager.TweetCriteria().setQuerySearch('europe refugees').setSince("2015-05-01").setUntil("2015-09-30").setMaxTweets(1)
-	tweet = got.manager.TweetManager.getTweets(tweetCriteria)[0]
-	  
-    print tweet.text
-```    
-- Get tweets by username and bound dates
-``` python
-	tweetCriteria = got.manager.TweetCriteria().setUsername("barackobama").setSince("2015-09-10").setUntil("2015-09-12").setMaxTweets(1)
-	tweet = got.manager.TweetManager.getTweets(tweetCriteria)[0]
-	  
-    print tweet.text
-```
-- Get the last 10 top tweets by username
-``` python
-	tweetCriteria = got.manager.TweetCriteria().setUsername("barackobama").setTopTweets(True).setMaxTweets(10)
-	# first one
-	tweet = got.manager.TweetManager.getTweets(tweetCriteria)[0]
-	  
-    print tweet.text
-```
-
-## Examples of command-line usage
-- Get help use
-```
-    python Exporter.py -h
+cd (path) 
+git clone https://github.com/jtizon001/ideahub.git
+git remote add origin https://github.com/jtizon001/ideahub.git
 ``` 
-- Get tweets by username
+
+After the project is cloned onto the user’s local machine several dependencies must be installed in the both main project directory as well as in the static directory. Must have pip and node installed on local machine.
+- While in the main project directory run ```pip install requirements.txt```, which contains all of the necessary python packages.
+- While in the static directory run ```npm install```, which should install all of the necessary JavaScript dependencies.
+
+Then users can test that all dependencies are correct by deploying the application on their localhost. The steps are as follow:
+- Navigate to the main project directory and run the command 
+
+```python app.py```
+- Open another command line window and navigate to the static folder. Then run the command
+
+```npm run start```
+
+The project should then open in a browser window on localhost.
+
+
+
+### Project Management
+Command to Pull while in the main project directory.
+
 ```
-    python Exporter.py --username "barackobama" --maxtweets 1
-```    
-- Get tweets by query search
+git pull
 ```
-    python Exporter.py --querysearch "europe refugees" --maxtweets 1
-```    
-- Get tweets by username and bound dates
+Commands to Push tracked changes to master branch of remote repository while in the main project directory
+
 ```
-    python Exporter.py --username "barackobama" --since 2015-09-10 --until 2015-09-12 --maxtweets 1
-```
-- Get the last 10 top tweets by username
-```
-    python Exporter.py --username "barackobama" --maxtweets 10 --toptweets
+git add .
+git commit -m “message for team with what was updated”
+git push origin master
 ```
 
-mjd0127@live.unc.edu
+### Deployment
+To redeploy the application on the Computer Science Department's blade follow:
