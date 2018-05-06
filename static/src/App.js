@@ -18,7 +18,7 @@ import C3Chart from 'react-c3js';
 import './c3.css';
 import download from 'downloadjs';
 
-
+/*--------------------- ICONS ------------------*/
 const GitHubIcon = (props) => (
   <SvgIcon {...props}>
       {<path
@@ -33,7 +33,6 @@ const HelpIcon = (props) => (
 )
 
 class App extends Component {
-
   state = {
     checked: false,
     csvReady: false,
@@ -42,9 +41,8 @@ class App extends Component {
     analyzing:false,
     help:false,
   }
-
+  //render the inital web page including the form and submit button. Option class render download and analysis option.
   render() {
-
     return (
     <MuiThemeProvider >
       <div className="App">
@@ -118,6 +116,7 @@ class App extends Component {
     </MuiThemeProvider>
     );
   }
+  /*--------------------- HANDLE UI CHANGE IN INITIAL PAGE------------------*/
   handleHelpOpen(e,index,value){
     this.setState({help: true});
   }
@@ -142,6 +141,8 @@ class App extends Component {
     var format_date=date.getFullYear()+"-"+(date.getMonth()+1)+ "-" + date.getDate();
     this.setState({'end_date': format_date});
   }
+  /*--------------------- HANDLE API CALLS ------------------*/
+  //handle form submission, upon return, render the download and analysis button
   handleSubmit(e){
     e.preventDefault();
     this.setState({'csvReady':false});
@@ -154,7 +155,6 @@ class App extends Component {
     ReactDOM.unmountComponentAtNode(document.getElementById('document_emotions_bar'));
     var file = this.state.filename? this.state.filename+'.csv' : 'output_got.csv';
     this.setState({'currentFileName':file});
-    // console.log(this.state.currentFileName);
     console.log(this.state);
     this.setState({'submitted': true});
     fetch('http://127.0.0.1:5000/api/form/'+sessionNo, {
@@ -170,6 +170,7 @@ class App extends Component {
     this.setState({'submitted': false});
     });
   }
+  //handle download , upon return, server returns the csv file as json and download the file in browser with user given name
   handleDownload(e,index,value){
     e.preventDefault();
     console.log(this.state.sessionNo);
@@ -188,12 +189,14 @@ class App extends Component {
     download(text,this.state.currentFileName,"text/csv");
   });
   }
+  //tab change handle change in the keyword and entity section
   handleTabChange (e,index,value) {
     this.setState({'entityTab':value});
   };
   handleKeyTabChange (e,index,value) {
     this.setState({'keyTab':value});
   };
+  //upon return, render c3 graphs
   handleAnalysis(e,index,value){
     e.preventDefault();
     this.setState({'analyzing':true});
