@@ -40,7 +40,7 @@ def watson(path):
         resp = post(tweet)
     except (UnicodeDecodeError, WatsonException) as err:
         resp='WATSON_ERROR_HEADER'
-    print('Sent analysis complete: "%s"' % resp)
+    #print('Sent analysis complete: "%s"' % resp)
     if resp!='WATSON_ERROR_HEADER':
         store_file('output_got_sent', resp)
     return resp

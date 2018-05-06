@@ -238,7 +238,7 @@ class App extends Component {
       /*------------------- ENTITY EMOTIONS BREAKDOWN (DONUT) ----------------------*/
       var keyEmo='';
       var key_emotion=[5];
-      const entity_donut = {title: "Emotions Breakdown"};
+      const entity_donut = {title: "Entities Breakdown"};
       var createReactClass = require('create-react-class');
       var KeyTabs=createReactClass({
         getInitialState: function() {
@@ -267,7 +267,7 @@ class App extends Component {
               }else{
                 tabs.push(
                   <Tab label={res['entities'][i]['text']}>
-                  <p>Emotion Breakdown Not Avaiable for This Keyword</p>
+                  <p>Emotions Breakdown Not Available for This Entity</p>
                   </Tab>
                 );
               }
@@ -320,7 +320,7 @@ class App extends Component {
               }else{
                 tabs.push(
                   <Tab label={res['keywords'][i]['text']} >
-                  <p>Emotion Breakdown Not Avaiable for This Keyword</p>
+                  <p>Emotion Breakdown Not Available for This Keyword</p>
                   </Tab>
                 );
               }
