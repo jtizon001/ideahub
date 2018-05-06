@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import AppBar from 'material-ui/AppBar';
 import TextField from 'material-ui/TextField';
@@ -174,7 +173,7 @@ class App extends Component {
   handleDownload(e,index,value){
     e.preventDefault();
     console.log(this.state.sessionNo);
-    fetch('http://127.0.0.1:5000/api/getCSV/'+this.state.sessionNo, {
+    fetch('http://127.0.0.1:5000/api/getCSV', {
       method: 'POST',
       headers: new Headers(
          {"Content-Type": "application/json"}
@@ -198,7 +197,7 @@ class App extends Component {
   handleAnalysis(e,index,value){
     e.preventDefault();
     this.setState({'analyzing':true});
-    fetch('http://127.0.0.1:5000/api/sentiment/'+this.sessionNo, {
+    fetch('http://127.0.0.1:5000/api/sentiment', {
       method: 'POST',
       headers: new Headers(
          {"Content-Type": "application/json"}
@@ -209,7 +208,9 @@ class App extends Component {
       this.setState({'analyzing':false});
       console.log('analysis sent');
       console.log(res);
-
+      if(res['error']==="WATSON_ERROR_HEADER"){
+        ReactDOM.render(<h1>The tweets you tweeted can not be processed by Watson</h1>, document.getElementById("document_sent"));
+      }else{
       /*--------------------- OVERALL DOCUMENT SENTIMENT ------------------*/
       const overall_sent = {
         columns: [
@@ -285,7 +286,6 @@ class App extends Component {
       var keyEmo='';
       var key_emotion=[5];
       const key_donut = {title: "Emotions Breakdown"};
-      // var createReactClass = require('create-react-class');
       var KeyTabs=createReactClass({
         getInitialState: function() {
           return {keyTab: 'a'};
@@ -360,7 +360,6 @@ class App extends Component {
       /*------------------- DOCUMENT EMOTIONS BREAKDOWN (BAR) -----------------------*/
       const doc_emotions_bar = {
         columns: [
-          //['x', res['emotion']['document']['emotion']['sadness'], res['emotion']['document']['emotion']['disgust'], res['emotion']['document']['emotion']['joy'], res['emotion']['document']['emotion']['anger'], res['emotion']['document']['emotion']['fear']]
           ['sadness', res['emotion']['document']['emotion']['sadness']],
           ['disgust', res['emotion']['document']['emotion']['disgust']],
           ['joy', res['emotion']['document']['emotion']['joy']],
@@ -368,23 +367,8 @@ class App extends Component {
           ['fear', res['emotion']['document']['emotion']['fear']]
         ],
         type: 'bar',
-        /*
-        colors: {
-          anger: '#ff0000',
-          disgust: '#556b2f',
-          fear: '#800080',
-          joy: '#ffff00',
-          sadness: '#1f77b4'
-        }
-        */
       },
       axis = {
-        /*
-        x: {
-          type: 'category',
-          categories: ['sadness', 'disgust', 'joy', 'anger', 'fear']
-        },
-        */
         rotated: true
       },
       bar = {
@@ -393,6 +377,7 @@ class App extends Component {
       };
 
       ReactDOM.render(<C3Chart data={doc_emotions_bar} bar={bar} axis={axis} />, document.getElementById('document_emotions_bar'));
+    }
     });
   }
 }

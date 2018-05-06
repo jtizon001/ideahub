@@ -92,7 +92,11 @@ def getSentiment():
         res = flask.make_response()
     if request.method == 'POST':
         formArg = request.get_json()
-        res = jsonify(watson('./outputfiles/output_got.csv'))
+        res=watson('./outputfiles/output_got.csv')
+        if res!='WATSON_ERROR_HEADER':
+            res= jsonify(res)
+        else:
+            res= jsonify(error=str(res))
     res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
     res.headers['Access-Control-Allow-Methods'] = 'POST,GET,OPTIONS'
     res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
