@@ -1,5 +1,5 @@
 import json
-from watson_developer_cloud import NaturalLanguageUnderstandingV1
+from watson_developer_cloud import NaturalLanguageUnderstandingV1,WatsonException
 from watson_developer_cloud.natural_language_understanding_v1 import Features, EntitiesOptions, KeywordsOptions, SentimentOptions, EmotionOptions
 from csv_manipulator import TweetCsv
 import codecs
@@ -35,9 +35,14 @@ def watson(path):
     data = TweetCsv(path)
     tweet = data.isolate_tweets()
     print('Stripped tweet')
-    resp = post(tweet)
+    # resp = post(tweet)
+    try:
+        resp = post(tweet)
+    except (UnicodeDecodeError, WatsonException) as err:
+        resp='WATSON_ERROR_HEADER'
     print('Sent analysis complete: "%s"' % resp)
-    store_file('output_got_sent', resp)
+    if resp!='WATSON_ERROR_HEADER':
+        store_file('output_got_sent', resp)
     return resp
 
 
@@ -48,5 +53,3 @@ def store_file(name, data):
     print('Sent analysis complete: "%s"' % json.dumps(data, sort_keys=True, indent=4))
     output.close()
     print('Sent analysis stored...')
-
-
