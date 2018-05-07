@@ -7,15 +7,13 @@ import Exporter
 import requests
 import json
 from watson_endpoint import watson
-<<<<<<< Updated upstream
 import ScrapeException
 import threading
-=======
+
 app=Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI']='mysql://ideahub:passwordd@localhost/db'
 from flask_sqlalchemy import SQLAlchemy
 from shutil import copyfile
->>>>>>> Stashed changes
 
 #app = Flask(__name__)
 CORS(app)
@@ -101,13 +99,7 @@ def getCSV(x):
         res = flask.make_response()
     if (request.method == 'POST'):
         formArg = request.get_json()
-<<<<<<< Updated upstream
-    return send_file('./outputfiles/output_got.csv', mimetype='text/csv',attachment_filename='test.csv',as_attachment=True)
 
-
-@app.route('/api/sentiment', methods=['GET', 'POST', 'OPTIONS'])
-def getSentiment():
-=======
         fileName =x+'.csv' #formArg.get('filename') + ".csv"
         res = flask.make_response()
 
@@ -122,19 +114,11 @@ def getSentiment():
 @app.route('/api/sentiment/<x>', methods=['GET', 'POST', 'OPTIONS'])
 def getSentiment(x):
     print(x)
->>>>>>> Stashed changes
     if request.method == 'OPTIONS':
         res = flask.make_response()
     if request.method == 'POST':
         formArg = request.get_json()
-<<<<<<< Updated upstream
-        res=watson('./outputfiles/output_got.csv')
-        if res!='WATSON_ERROR_HEADER':
-            res= jsonify(res)
-        else:
-            res= jsonify(error=str(res))
-    res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
-=======
+
         res = watson('./outputfiles/'+x+'.csv')
         row=db.session.query(Sessions).filter(Sessions.session_id==x).first()
         row.sentiment=json.dumps(res)
@@ -147,7 +131,6 @@ def getSentiment(x):
         #      values(sentiment=res)
  
     res.headers['Access-Control-Allow-Origin'] = 'http://dpbld08a.cs.unc.edu'
->>>>>>> Stashed changes
     res.headers['Access-Control-Allow-Methods'] = 'POST,GET,OPTIONS'
     res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
     return res
