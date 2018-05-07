@@ -13,7 +13,7 @@ Once on the web page users are presented with several fields, which act as param
 
 
 The mandatory fields that MUST be filled out for application to work as intended are:
-- Tweet Amount, which represents the number of tweets to be scraped
+- Tweet Amount, which represents the number of tweets to be scraped.  If blank, default is set to 2000.
 
 And one or both of the following
 - Keywords, which will scrape tweets that include the keyword.
@@ -30,6 +30,13 @@ The optional fields that narrow the target tweets to scrape are:
 - Submit; after entering the required fields in the main forum the user can click submit, which is an event that triggers the Tweet Scraper. After the tweets are scraped successfully the two following options will appear.
 - Download; onclick event that will download the scraped tweets as a CSV.
 - See Analysis; onclick event that gets sentiment analysis of the scraped tweets from Watson’s NLU library and renders four visualizations under the original forum that display sentiment for the top five keywords and entities mentioned in the dataset, as well as the overall document sentiment. The documentation for Watson's NLU API can be found at https://www.ibm.com/watson/developercloud/natural-language-understanding/api/v1/
+
+### Description of Visualizations
+- Gauge chart of the overall document sentiment.  The result is a score from -1.0 to +1.0.
+- Donut chart of Top 5 entities and sentiment.  This shows the percentage breakdown of emotions associated with each entity.
+- Donut chart of Top 5 keywords and sentiment.  This shows the percentage breakdown of emotions associated with each keyword.
+- Donut chart of overall document emotion sentiment.  This shows the percentage breakdown of emotions associated with all the scraped tweets.
+- Bar chart of overall document emotions.  Unlike the donut chart, this shows the actual score that the sentiment analysis returned for each emotion instead of a percentage contribution.
 
 ## Admin Level
 ### Installing Project Locally
