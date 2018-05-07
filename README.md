@@ -56,8 +56,23 @@ Then users can test that all dependencies are correct by deploying the applicati
 ```npm run start```
 
 The project should then open in a browser window on localhost.
-
-
+The project may have the routes set to run on the department server. If this is the case follow these steps:
+In app.py change each
+```
+res.headers['Access-Control-Allow-Origin'] = 'http://dpbld08a.cs.unc.edu'
+```
+to
+```
+res2.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
+```
+In App.js change each 
+```
+fetch('http://152.2.133.31:443/api/form/'+sessionNo, {
+```
+to
+```
+fetch('http://localhost:5000/api/form/'+sessionNo, {
+```
 
 ### Project Management
 Command to Pull while in the main project directory.
