@@ -72,6 +72,16 @@ git add .
 git commit -m “message for team with what was updated”
 git push origin master
 ```
+### Database
+We used a mysql database to differentiate each session from each user. 
+
+The MYSQL database only contains one table.
+The columns are:
+- session_id = randomly generated string to identify user sessions
+- csv = file path
+- sentiment = response from watson
+- username = name of twitter account scraped
+- keywords = keywords used to scrap
 
 ### Deployment
 To redeploy the application on the Computer Science Department's blade follow:
