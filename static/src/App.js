@@ -57,8 +57,29 @@ class App extends Component {
           modal={false}
           open={this.state.help}
           onRequestClose={this.handleHelpClose.bind(this)}
+          autoScrollBodyContent={true}
         >
-          This is an instruction of how to scrape tweets!
+        <p style={{color:'orange'}}>Important fields (all fields are optional)</p>
+          <span style={{color:'#30c0c7'}}>Tweets amount:</span> maximum of tweets you want to scrape. This field is suggested if the content scraped is massive. If not filled in, the default is 2000.
+          <br/><span style={{color:'#30c0c7'}}>Username:</span> the Twitter account you want to scrape.
+          <br/><span style={{color:'#30c0c7'}}>Keyword:</span> all tweets pulled will have this keyword present.
+          <br/><span style={{color:'#30c0c7'}}>Location:</span> pulls tweets from only the geolocation.
+          <br/><span style={{color:'#30c0c7'}}>Radius:</span> ignores tweets outside of specified radius from the location you specified.
+          <br/><span style={{color:'#30c0c7'}}>CSV file name:</span> acts as the filename when attempting to download Twitter CSV.
+          <br/><span style={{color:'#30c0c7'}}>Start Date:</span> Begins searching for tweets starting from specific date.
+          <br/><span style={{color:'#30c0c7'}}>End Date:</span> Does not search for tweets after specific date.
+        <p style={{color:'orange'}}>Steps</p>
+          1. Fill out desired fields.
+          <br/>2. Click “Submit” and wait for scraping to finish.
+          <br/>3. Click on “See Analysis” to see the sentiment analysis of your tweets.
+          <br/>4. Click on “Download” to download your tweets as a CSV file. To name your CSV file, fill in CSV file name field.
+        <p style={{color:'orange'}}>Sentiment Analysis</p>
+          1. Document sentiment and emotion breakdown shows the sentiment and emotion summary of your tweets
+          <br/>2. We display the top 5 important concept (Keywords) and content (entities) in your tweets and their emotion breakdown.
+        <p style={{color:'orange'}}>Examples</p>
+          1. Username: “barackObama”. Pulls 2,000 most recent tweets
+          <br/>2. Username: “barackObama”; keyword: “Joe Biden”. Pulls 2,000 most recent tweets that reference Joe Biden
+
         </Dialog>
         <div><br/></div>
         <Card style={{margin:'0 auto',width:'90%',}}>
