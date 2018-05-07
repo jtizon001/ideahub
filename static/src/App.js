@@ -178,7 +178,7 @@ class App extends Component {
     var file = this.state.filename? this.state.filename+'.csv' : 'output_got.csv';
     this.setState({'currentFileName':file});
     this.setState({'submitted': true});
-    fetch('http://127.0.0.1:5000/api/form/'+sessionNo, {
+    fetch('http://152.2.133.31:443/api/form/'+sessionNo, {
       method: 'POST',
       headers: new Headers(
          {"Content-Type": "application/json"}
@@ -194,7 +194,7 @@ class App extends Component {
   //handle download , upon return, server returns the csv file as json and download the file in browser with user given name
   handleDownload(e,index,value){
     e.preventDefault();
-    fetch('http://127.0.0.1:5000/api/getCSV', {
+    fetch('http://152.2.133.31:443/api/getCSV/'+this.state.sessionNo, {
       method: 'POST',
       headers: new Headers(
          {"Content-Type": "application/json"}
@@ -219,7 +219,8 @@ class App extends Component {
   handleAnalysis(e,index,value){
     e.preventDefault();
     this.setState({'analyzing':true});
-    fetch('http://127.0.0.1:5000/api/sentiment', {
+
+    fetch('http://152.2.133.31:443/api/sentiment/'+this.state.sessionNo, {
       method: 'POST',
       headers: new Headers(
          {"Content-Type": "application/json"}
