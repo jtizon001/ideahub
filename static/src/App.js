@@ -368,6 +368,8 @@ class App extends Component {
       )
 
       /*------------------- DOCUMENT EMOTIONS BREAKDOWN (DONUT) ----------------------*/
+      if (res['emotion']) {
+      
       const doc_emotions_donut = {
         columns: [
           ['sadness', res['emotion']['document']['emotion']['sadness']],
@@ -426,6 +428,8 @@ class App extends Component {
           </MuiThemeProvider>
       );
       ReactDOM.render(doc_emo_bar, document.getElementById('document_emotions_bar'));
+      }
+      
     }
     });
   }
