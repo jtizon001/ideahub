@@ -26,10 +26,10 @@ app.debug=True
 def index():
     return flask.send_from_directory('static', 'index.html')
 
-
+### this route is used for the initial scrap of tweets 
 @app.route('/api/form/<x>', methods=['GET', 'POST', 'OPTIONS'])
 def scrapeForm(x):
-    print('api/form/'+x)
+    ### parameters for scrape followed by checks to pass into scraper
     user = ''
     tweet_amount = ''
     checked = 'false'
@@ -54,7 +54,7 @@ def scrapeForm(x):
         if tweet_amount:
             commandList.extend(['--maxtweets', str(tweet_amount)])
         else:
-            commandList.extend(['--maxtweets', str(2000)])
+            commandList.extend(['--maxtweets', str(2000)])  ### tweet default amount
         # filename = formArg.get('filename')
         # if filename:
         #     commandList.extend(['--output', str(filename)])
@@ -77,22 +77,22 @@ def scrapeForm(x):
         path = Exporter.main(commandList)
         #sent_tweet = getSentiment('./outputfiles/' + path)
         res = flask.make_response(jsonify(res='hello'))
-        #out_file=open('outputfiles/output_got.csv','r').read()
-        #print(out_file)
+        #### got makes always writes to output_got.csv which will get overwritten
+        ### made a copy of the file renaming it to session id,   x.csv
         copyfile('./outputfiles/output_got.csv','./outputfiles/'+x+'.csv')
-        
+        # insert the file path to the db
         add_2_db = Sessions(session_id=x,csv='./outputfiles/'+x+'.csv',username=user, keyword=keyword)
         db.session.add(add_2_db)
         db.session.commit()
 
-    print('done writing')
+    print('done writing') ### CORS
     res.headers['Access-Control-Allow-Origin'] = 'http://dpbld08a.cs.unc.edu'
     res.headers['Access-Control-Allow-Methods'] = 'POST,GET,OPTIONS'
     res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
 
     return res
 
-
+### this method using session id (x) to retrieve csv 
 @app.route('/api/getCSV/<x>', methods=['GET', 'POST'])
 def getCSV(x):
     if (request.method == 'OPTIONS'):
@@ -110,7 +110,7 @@ def getCSV(x):
     res.headers['Content-Type'] = 'application/octet-stream'
     return flask.send_from_directory('outputfiles', fileName, as_attachment=True)
 
-
+### This method makes a call the the watson_endpoint
 @app.route('/api/sentiment/<x>', methods=['GET', 'POST', 'OPTIONS'])
 def getSentiment(x):
     print(x)
@@ -118,7 +118,7 @@ def getSentiment(x):
         res = flask.make_response()
     if request.method == 'POST':
         formArg = request.get_json()
-
+        ###reads csv file session_id.csv
         res = watson('./outputfiles/'+x+'.csv')
         row=db.session.query(Sessions).filter(Sessions.session_id==x).first()
         row.sentiment=json.dumps(res)
@@ -135,13 +135,14 @@ def getSentiment(x):
     res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
     return res
 
+### Database Schema using SQLAlchemy
 class Sessions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     session_id = db.Column(db.String(80), unique=True, index=True, nullable=False)
-    csv = db.Column(db.Text, nullable=True)
-    sentiment = db.Column(db.Text, nullable=True)
-    username=db.Column(db.String(80), nullable=True)
-    keyword=db.Column(db.String(80), nullable=True)
+    csv = db.Column(db.Text, nullable=True) #file path
+    sentiment = db.Column(db.Text, nullable=True) #sentiment string
+    username=db.Column(db.String(80), nullable=True) #username of account scraped 
+    keyword=db.Column(db.String(80), nullable=True) #keyword user my choose to filter tweets
 
     def __repr__(self):
         return '<User 5r>' % self.session_id
