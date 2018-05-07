@@ -1,14 +1,27 @@
+import pymysql as MySQLdb
 import flask
-from flask import Flask, request, url_for, jsonify, json, make_response, current_app,send_file
+from flask import Flask, request, url_for, jsonify, json, make_response, current_app
 from flask_restful import reqparse, abort, Api, Resource
 from flask_cors import CORS, cross_origin
 import Exporter
+import requests
+import json
 from watson_endpoint import watson
+<<<<<<< Updated upstream
 import ScrapeException
 import threading
+=======
+app=Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI']='mysql://ideahub:passwordd@localhost/db'
+from flask_sqlalchemy import SQLAlchemy
+from shutil import copyfile
+>>>>>>> Stashed changes
 
-app = Flask(__name__)
+#app = Flask(__name__)
 CORS(app)
+db=SQLAlchemy(app)
+
+app.debug=True
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -18,7 +31,7 @@ def index():
 
 @app.route('/api/form/<x>', methods=['GET', 'POST', 'OPTIONS'])
 def scrapeForm(x):
-    print(x)
+    print('api/form/'+x)
     user = ''
     tweet_amount = ''
     checked = 'false'
@@ -66,38 +79,91 @@ def scrapeForm(x):
         path = Exporter.main(commandList)
         #sent_tweet = getSentiment('./outputfiles/' + path)
         res = flask.make_response(jsonify(res='hello'))
+        #out_file=open('outputfiles/output_got.csv','r').read()
+        #print(out_file)
+        copyfile('./outputfiles/output_got.csv','./outputfiles/'+x+'.csv')
+        
+        add_2_db = Sessions(session_id=x,csv='./outputfiles/'+x+'.csv',username=user, keyword=keyword)
+        db.session.add(add_2_db)
+        db.session.commit()
 
-    res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
+    print('done writing')
+    res.headers['Access-Control-Allow-Origin'] = 'http://dpbld08a.cs.unc.edu'
     res.headers['Access-Control-Allow-Methods'] = 'POST,GET,OPTIONS'
     res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
+
     return res
 
 
-@app.route('/api/getCSV', methods=['GET', 'POST'])
-def getCSV():
+@app.route('/api/getCSV/<x>', methods=['GET', 'POST'])
+def getCSV(x):
     if (request.method == 'OPTIONS'):
         res = flask.make_response()
     if (request.method == 'POST'):
         formArg = request.get_json()
+<<<<<<< Updated upstream
     return send_file('./outputfiles/output_got.csv', mimetype='text/csv',attachment_filename='test.csv',as_attachment=True)
 
 
 @app.route('/api/sentiment', methods=['GET', 'POST', 'OPTIONS'])
 def getSentiment():
+=======
+        fileName =x+'.csv' #formArg.get('filename') + ".csv"
+        res = flask.make_response()
+
+    res.headers['Access-Control-Allow-Origin'] = 'http://dpbld08a.cs.unc.edu'
+    res.headers['Access-Control-Allow-Methods'] = 'POST,GET,OPTIONS'
+    res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
+    res.headers['Content-Disposition'] = 'attachment; filename=' + fileName
+    res.headers['Content-Type'] = 'application/octet-stream'
+    return flask.send_from_directory('outputfiles', fileName, as_attachment=True)
+
+
+@app.route('/api/sentiment/<x>', methods=['GET', 'POST', 'OPTIONS'])
+def getSentiment(x):
+    print(x)
+>>>>>>> Stashed changes
     if request.method == 'OPTIONS':
         res = flask.make_response()
     if request.method == 'POST':
         formArg = request.get_json()
+<<<<<<< Updated upstream
         res=watson('./outputfiles/output_got.csv')
         if res!='WATSON_ERROR_HEADER':
             res= jsonify(res)
         else:
             res= jsonify(error=str(res))
     res.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
+=======
+        res = watson('./outputfiles/'+x+'.csv')
+        row=db.session.query(Sessions).filter(Sessions.session_id==x).first()
+        row.sentiment=json.dumps(res)
+        db.session.commit()
+        if res != '!WATSON_ERROR_HEADER':
+            res = jsonify(res)
+        else:
+            res = jsonify(error=str(res))
+        #update(sessions).where(session_id==x).\
+        #      values(sentiment=res)
+ 
+    res.headers['Access-Control-Allow-Origin'] = 'http://dpbld08a.cs.unc.edu'
+>>>>>>> Stashed changes
     res.headers['Access-Control-Allow-Methods'] = 'POST,GET,OPTIONS'
     res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
     return res
 
+class Sessions(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    session_id = db.Column(db.String(80), unique=True, index=True, nullable=False)
+    csv = db.Column(db.Text, nullable=True)
+    sentiment = db.Column(db.Text, nullable=True)
+    username=db.Column(db.String(80), nullable=True)
+    keyword=db.Column(db.String(80), nullable=True)
+
+    def __repr__(self):
+        return '<User 5r>' % self.session_id
+
+
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=443)
