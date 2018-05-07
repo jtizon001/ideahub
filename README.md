@@ -85,3 +85,12 @@ The columns are:
 
 ### Deployment
 To redeploy the application on the Computer Science Department's blade follow:
+``` screen -a
+    sudo su
+    npm install
+    npm start
+    crtl a d ```
+``` screen -a
+    sudo python3 app.py
+    crtl a d```
+  
