@@ -8,6 +8,8 @@ An analysis dashboard that provides social media mining, data analysis, and visu
 ### Access application
 Users can find the application at: http://dpbld08a.cs.unc.edu
 
+The repository can be cloned from the original repo at: https://github.com/jtizon001/ideahub
+
 ### Fields
 Once on the web page users are presented with several fields, which act as parameters for the custom Twitter Scraping code implemented. The custom code documentation can be found at:  https://github.com/Jefferson-Henrique/GetOldTweets-python
 
