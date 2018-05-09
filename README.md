@@ -38,6 +38,8 @@ The optional fields that narrow the target tweets to scrape are:
 - Donut chart of overall document emotion sentiment.  This shows the percentage breakdown of emotions associated with all the scraped tweets.
 - Bar chart of overall document emotions.  Unlike the donut chart, this shows the actual score that the sentiment analysis returned for each emotion instead of a percentage contribution.
 
+If there are questions about updating the User Interface or adding html to the front end, users can visit: http://www.material-ui.com/#/
+
 ## Admin Level
 ### Installing Project Locally
 First Installation (Clone from GitHub)
