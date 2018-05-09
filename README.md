@@ -117,7 +117,7 @@ The columns are:
 
 ### Deployment
 To redeploy the application on the Computer Science Department's blade follow:
-- frontend
+- frontend: the main file is "static/app.js"
 ``` 
 screen -a
 sudo su
@@ -125,7 +125,7 @@ npm install
 npm start
 crtl a d 
 ```
-- backend
+- backend: the main file is "/app.py"
 ``` 
 screen -a
 sudo python3 app.py
